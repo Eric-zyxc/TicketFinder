@@ -13,7 +13,6 @@ class SignUpRequest(BaseModel):
 
 
 class ResetPwdRequest(BaseModel):
-    username: str
     new_password: str
 
 

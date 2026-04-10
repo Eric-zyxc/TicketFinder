@@ -51,24 +51,20 @@ class UserService:
             return exisiting_user
         return {"state": "fail", "message": "Cannot find user"}
 
-    def reset_password(self, username: str, new_password: str):
+    def reset_password(self, user: User, new_password: str):
         password_validator = PasswordValidator(new_password)
         if not password_validator.check():
             return {"state": "fail", "message": "Password is not valid"}
 
-        exisiting_user = self.user_dal.get_user_by_username(username)
-        if exisiting_user:
-            hashed_pwd = pwd_context.hash(new_password)
-            updated_user = self.user_dal.set_password_by_username(username, hashed_pwd)
-            return {
-                "state": "success",
-                "message": "Password updated",
-                "user_id": updated_user.id,
-            }
-        return {"state": "fail", "message": "Cannot find user"}
+        hashed_pwd = pwd_context.hash(new_password)
+        self.user_dal.set_password(user.id, hashed_pwd)
+        return {
+            "state": "success",
+            "message": "Password updated",
+        }
 
-    def get_user_info(self, username: str):
-        user = self.user_dal.get_user_by_username(username)
+    def get_my_info(self, user: User):
+        user = self.user_dal.get_user_by_username(user.username)
         if user:
             return self.to_dict(user)
         return {"state": "fail", "message": "Cannot find user"}
@@ -77,13 +73,14 @@ class UserService:
         res = {
             "user_id": user.id,
             "username": user.username,
-            "password": "*********",
+            "password": user.password,
             "name": user.name,
             "age": user.age,
             "address": user.address,
             "email": user.email,
             "phone": user.phone,
             "note": user.note,
+            "state": "active",
         }
         return res
 

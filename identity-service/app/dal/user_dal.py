@@ -33,11 +33,14 @@ class UserDAL:
     def get_user_by_username(self, username: str):
         return self.db.query(User).filter(User.username == username).first()
 
+    def get_user_by_id(self, id: int):
+        return self.db.query(User).filter(User.id == id).first()
+
     def contains(self, username: str):
         return self.db.query(User).filter(User.username == username).first() is not None
 
-    def set_password_by_username(self, username: str, new_password: str):
-        user = self.get_user_by_username(username)
+    def set_password(self, id: int, new_password: str):
+        user = self.get_user_by_id(id)
         if not user:
             return None
         user.password = new_password

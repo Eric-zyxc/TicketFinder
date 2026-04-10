@@ -3,12 +3,13 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from sqlalchemy.orm import Session
-
+from datetime import datetime, timedelta
 from app.core.database import connect_db
 from app.dal.user_dal import UserDAL
 
 SECRET_KEY = "admin"
 ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
@@ -37,3 +38,15 @@ def get_current_user(
         raise credentials_exception
 
     return user
+
+
+def create_access_token(data: dict):
+    to_encode = data.copy()
+
+    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+
+    to_encode.update({"exp": expire})
+
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+    return encoded_jwt
