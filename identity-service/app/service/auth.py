@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 
-from app.database.database import connect_db
+from app.core.database import connect_db
 from app.dal.user_dal import UserDAL
 
 SECRET_KEY = "admin"
