@@ -14,3 +14,4 @@ class User(Base):
     note = Column(String(500), nullable=True)
     phone = Column(String(30), nullable=True)
     email = Column(String(100), nullable=True)
+    role = Column(String(30), nullable=False)

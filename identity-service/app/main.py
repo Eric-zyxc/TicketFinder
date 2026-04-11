@@ -1,9 +1,11 @@
 from fastapi import FastAPI
-from app.api.identify_router import router
+from app.api.user_router import user_router
+from app.api.admin_router import admin_router
 
 identity_service = FastAPI()
 
-identity_service.include_router(router)
+identity_service.include_router(user_router)
+identity_service.include_router(admin_router)
 
 
 @identity_service.get("/")

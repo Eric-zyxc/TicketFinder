@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
-
 from app.core.database import connect_db
 import app.schemas.request as request
 from app.service.user_service import UserService
@@ -9,10 +8,10 @@ from app.models.user import User
 from app.service.auth import get_current_user
 from app.service.auth import create_access_token
 
-router = APIRouter()
+user_router = APIRouter()
 
 
-@router.post("/sign_up")
+@user_router.post("/sign_up")
 def add_user(data: request.SignUpRequest, db: Session = Depends(connect_db)):
     """
     Use:\n
@@ -36,7 +35,7 @@ def add_user(data: request.SignUpRequest, db: Session = Depends(connect_db)):
     )
 
 
-@router.post("/login")
+@user_router.post("/login")
 def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(connect_db),
@@ -65,7 +64,7 @@ def login(
     }
 
 
-@router.post("/reset_password")
+@user_router.post("/reset_password")
 def reset_password(
     data: request.ResetPwdRequest,
     current_user: User = Depends(get_current_user),
@@ -82,10 +81,14 @@ def reset_password(
     """
 
     user_service = UserService(db)
-    return user_service.reset_password(current_user, data.new_password)
+    return user_service.reset_password(
+        user=current_user,
+        current_password=data.current_password,
+        new_password=data.new_password,
+    )
 
 
-@router.post("/set_my_info")
+@user_router.post("/set_my_info")
 def set_my_info(
     data: request.ChangeUserInfoRequest,
     current_user: User = Depends(get_current_user),
@@ -112,7 +115,7 @@ def set_my_info(
     )
 
 
-@router.get("/get_my_info")
+@user_router.get("/get_my_info")
 def get_my_info(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(connect_db),

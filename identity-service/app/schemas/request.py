@@ -13,6 +13,7 @@ class SignUpRequest(BaseModel):
 
 
 class ResetPwdRequest(BaseModel):
+    current_password: str
     new_password: str
 
 
@@ -26,3 +27,7 @@ class ChangeUserInfoRequest(BaseModel):
     email: Optional[str] = None
     phone: Optional[str] = None
     address: Optional[str] = None
+
+
+class GeneralUsernameRequest(BaseModel):
+    username: str

@@ -51,7 +51,20 @@ class UserService:
             return exisiting_user
         return {"state": "fail", "message": "Cannot find user"}
 
-    def reset_password(self, user: User, new_password: str):
+    def reset_password(self, user: User, current_password: str, new_password: str):
+        target_user = self.user_dal.get_user_by_id(user.id)
+        if not target_user:
+            return {"state": "fail", "message": "cannot find user"}
+
+        if not pwd_context.verify(current_password, target_user.password):
+            return {"state": "fail", "message": "current password is wrong"}
+
+        if new_password == current_password:
+            return {
+                "state": "fail",
+                "message": "new password cannot be same as old password",
+            }
+
         password_validator = PasswordValidator(new_password)
         if not password_validator.check():
             return {"state": "fail", "message": "Password is not valid"}
@@ -79,6 +92,7 @@ class UserService:
             "address": user.address,
             "email": user.email,
             "phone": user.phone,
+            "role": user.role,
             "note": user.note,
             "state": "active",
         }

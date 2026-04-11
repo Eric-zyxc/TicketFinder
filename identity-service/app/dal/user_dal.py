@@ -24,6 +24,7 @@ class UserDAL:
             email=email,
             phone=phone,
             address=address,
+            role="active",
         )
         self.db.add(user)
         self.db.commit()
@@ -48,7 +49,18 @@ class UserDAL:
         self.db.refresh(user)
         return user
 
-    def set_user_info(self, id: int, name: str,age:str,email:str,phone:str,address:str):
+    def promote(self, username: str):
+        user = self.get_user_by_username(username=username)
+        if not user:
+            return None
+        user.role = "admin"
+        self.db.commit()
+        self.db.refresh(user)
+        return user
+
+    def set_user_info(
+        self, id: int, name: str, age: str, email: str, phone: str, address: str
+    ):
         user = self.get_user_by_id(id)
         if not user:
             return None
@@ -60,6 +72,3 @@ class UserDAL:
         self.db.commit()
         self.db.refresh(user)
         return user
-
-
-
