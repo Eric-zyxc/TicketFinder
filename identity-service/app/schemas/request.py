@@ -20,6 +20,9 @@ class GetUserInfoRequest(BaseModel):
     username: str
 
 
-class LoginRequest(BaseModel):
-    username: str
-    password: str
+class ChangeUserInfoRequest(BaseModel):
+    name: Optional[str] = None
+    age: Optional[int] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    address: Optional[str] = None

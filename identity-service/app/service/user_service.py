@@ -93,3 +93,33 @@ class UserService:
             return self.to_dict(target_user)
 
         return {"state": "fail", "message": "Password is not correct"}
+
+    def set_my_info(
+        self, user: User, name: str, age: int, email: str, phone: str, address: str
+    ):
+        if len(name) > 30:
+            return {
+                "state": "fail",
+                "message": "name length cannot be greater than 30 characters",
+            }
+        if age < 0 or age > 100:
+            return {"state": "fail", "message": "age is not in the accpeted range"}
+        if len(email) > 100:
+            return {
+                "state": "fail",
+                "message": "email length cannot be greater than 100 characters",
+            }
+        if len(phone) > 30:
+            return {
+                "state": "fail",
+                "message": "phone number length cannot be greater than 30 characters",
+            }
+        if len(address) > 100:
+            return {
+                "state": "fail",
+                "message": "address length cannot be greater than 30 characters",
+            }
+        self.user_dal.set_user_info(
+            id=user.id, name=name, age=age, email=email, phone=phone, address=address
+        )
+        return self.user_dal.get_user_by_id(user.id)

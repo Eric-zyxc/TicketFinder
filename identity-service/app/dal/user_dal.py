@@ -48,47 +48,18 @@ class UserDAL:
         self.db.refresh(user)
         return user
 
-    def set_name(self, username: str, name: str):
-        user = self.get_user_by_username(username)
+    def set_user_info(self, id: int, name: str,age:str,email:str,phone:str,address:str):
+        user = self.get_user_by_id(id)
         if not user:
             return None
         user.name = name
-        self.db.commit()
-        self.db.refresh(user)
-        return user
-
-    def set_age(self, username: str, age: int):
-        user = self.get_user_by_username(username)
-        if not user:
-            return None
         user.age = age
-        self.db.commit()
-        self.db.refresh(user)
-        return user
-
-    def set_email(self, username: str, email: str):
-        user = self.get_user_by_username(username)
-        if not user:
-            return None
         user.email = email
-        self.db.commit()
-        self.db.refresh(user)
-        return user
-
-    def set_phone(self, username: str, phone: str):
-        user = self.get_user_by_username(username)
-        if not user:
-            return None
         user.phone = phone
-        self.db.commit()
-        self.db.refresh(user)
-        return user
-
-    def set_address(self, username: str, address: str):
-        user = self.get_user_by_username(username)
-        if not user:
-            return None
         user.address = address
         self.db.commit()
         self.db.refresh(user)
         return user
+
+
+

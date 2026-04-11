@@ -15,13 +15,13 @@ router = APIRouter()
 @router.post("/sign_up")
 def add_user(data: request.SignUpRequest, db: Session = Depends(connect_db)):
     """
-    Usage:\n
+    Use:\n
         sign up api, use to create a new account\n
     Args:\n
-        sign up request from\n
+        sign up request (form)\n
     Returns: \n
-        fail: state, message\n
-        success: user info\n
+        fail: state=fail, message\n
+        success: user info (json)\n
     """
 
     user_service = UserService(db)
@@ -36,30 +36,20 @@ def add_user(data: request.SignUpRequest, db: Session = Depends(connect_db)):
     )
 
 
-@router.post("/reset_password")
-def reset_password(
-    data: request.ResetPwdRequest,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(connect_db),
-):
-    user_service = UserService(db)
-    return user_service.reset_password(current_user, data.new_password)
-
-
-@router.get("/my_info")
-def get_user(
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(connect_db),
-):
-    user_service = UserService(db)
-    return user_service.get_my_info(current_user)
-
-
 @router.post("/login")
 def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(connect_db),
 ):
+    """
+    User:\n
+        Login user into the system, verify authencation\n
+    Args:\n
+        login request (form)\n
+    Return:\n
+        token (JWT)\n
+    """
+
     user_service = UserService(db)
 
     result = user_service.login(form_data.username, form_data.password)
@@ -73,3 +63,68 @@ def login(
         "access_token": access_token,
         "token_type": "bearer",
     }
+
+
+@router.post("/reset_password")
+def reset_password(
+    data: request.ResetPwdRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(connect_db),
+):
+    """
+    Use:\n
+        reset/change password\n
+    Args:\n
+        current user auth, new password\n
+    Reture:\n
+        fail: state=fail, message
+        success: state=success, message
+    """
+
+    user_service = UserService(db)
+    return user_service.reset_password(current_user, data.new_password)
+
+
+@router.post("/set_my_info")
+def set_my_info(
+    data: request.ChangeUserInfoRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(connect_db),
+):
+    """
+    Use:\n
+        update current user's information\n
+    Args:\n
+        user info request (form)\n
+    Returns:\n
+        fail: state=fail, message
+        success: updated user information (json)
+    """
+
+    user_service = UserService(db)
+    return user_service.set_my_info(
+        current_user,
+        name=data.name,
+        age=data.age,
+        email=data.email,
+        phone=data.phone,
+        address=data.address,
+    )
+
+
+@router.get("/get_my_info")
+def get_my_info(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(connect_db),
+):
+    """
+    Use:\n
+        get the information of the current user.\n
+    Args:\n
+        None\n
+    Returns:\n
+        success: current user information (json)
+    """
+
+    user_service = UserService(db)
+    return user_service.get_my_info(current_user)

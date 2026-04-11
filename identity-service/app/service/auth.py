@@ -9,7 +9,7 @@ from app.dal.user_dal import UserDAL
 
 SECRET_KEY = "admin"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+ACCESS_TOKEN_EXPIRE_MINUTES = 300
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
