@@ -115,7 +115,7 @@ def set_my_info(
     )
 
 
-@user_router.get("/get_my_info")
+@user_router.get("/me")
 def get_my_info(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(connect_db),
@@ -131,3 +131,19 @@ def get_my_info(
 
     user_service = UserService(db)
     return user_service.get_my_info(current_user)
+
+
+@user_router.post("/logout")
+def logout(
+    current_user: User = Depends(get_current_user), db: Session = Depends(connect_db)
+):
+    user_service = UserService(db)
+    return user_service.logout(current_user)
+
+
+@user_router.delete("/delete_me")
+def delete_me(
+    current_user: User = Depends(get_current_user), db: Session = Depends(connect_db)
+):
+    user_service = UserService(db)
+    return user_service.delete_me(current_user=current_user)

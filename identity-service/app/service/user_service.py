@@ -108,6 +108,12 @@ class UserService:
 
         return {"state": "fail", "message": "Password is not correct"}
 
+    def logout(self, user: User):
+        target_user = self.user_dal.get_user_by_id(user.id)
+        if not target_user:
+            return {"state": "fail", "message": "Cannot find user"}
+        return {"state": "success", "message": "User logged out"}
+
     def set_my_info(
         self, user: User, name: str, age: int, email: str, phone: str, address: str
     ):
@@ -137,3 +143,11 @@ class UserService:
             id=user.id, name=name, age=age, email=email, phone=phone, address=address
         )
         return self.user_dal.get_user_by_id(user.id)
+
+    def delete_me(self, current_user):
+        if current_user.username == "superadmin":
+            return {"state": "fail", "message": "Super admin cannot be deleted"}
+        cur_user = self.user_dal.get_user_by_id(current_user.id)
+        if not cur_user:
+            return {"state": "fail", "message": "Cannot find the user"}
+        return self.user_dal.delete_user(cur_user.username)

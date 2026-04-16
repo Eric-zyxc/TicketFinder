@@ -72,3 +72,12 @@ class UserDAL:
         self.db.commit()
         self.db.refresh(user)
         return user
+
+    def get_users(self):
+        return self.db.query(User).all()
+
+    def delete_user(self, username: str):
+        user = self.get_user_by_username(username=username)
+        self.db.delete(user)
+        self.db.commit()
+        return {"state": "success", "message": "User is deleted", "username": username}
