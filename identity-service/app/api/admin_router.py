@@ -36,7 +36,7 @@ def get_users(
     return admin_service.get_users(current_user=current_user)
 
 
-@admin_router.get("admin/get_user/{target_username}")
+@admin_router.get("/admin/get_user/{target_username}")
 def get_user_by_username(
     target_username: str,
     current_user: User = Depends(get_current_user),
@@ -48,7 +48,7 @@ def get_user_by_username(
     )
 
 
-@admin_router.delete("admin/delete_user/{target_username}")
+@admin_router.delete("/admin/delete_user/{target_username}")
 def delete_user(
     target_username: str,
     current_user: User = Depends(get_current_user),
