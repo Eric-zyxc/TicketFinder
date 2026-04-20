@@ -115,8 +115,4 @@ DevTools → Application → Local Storage
 - Add loading & error handling
 - Role-based routing (admin/user)
 
----
 
-## 👨‍💻 Author
-
-Jesse Yang
