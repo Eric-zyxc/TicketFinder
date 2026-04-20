@@ -51,6 +51,11 @@ async function logout() {
   const data = await res.json();
   if (data.state === "success") {
     localStorage.removeItem("token");
+    localStorage.removeItem("name");
+    localStorage.removeItem("age");
+    localStorage.removeItem("email");
+    localStorage.removeItem("phone");
+    localStorage.removeItem("address");
     router.push("/");
   }
   return;

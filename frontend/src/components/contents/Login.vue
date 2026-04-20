@@ -30,7 +30,7 @@ const password = ref("");
 const message = ref("");
 
 async function login() {
-  if (username.value == "") {
+  if (username.value == "" || password.value == "") {
     message.value = "User name and password cannot to be empty";
     return;
   }

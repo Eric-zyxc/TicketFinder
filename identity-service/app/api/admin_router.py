@@ -14,10 +14,10 @@ import uvicorn
 from fastapi import Depends
 from sqlalchemy import text
 
-admin_router = APIRouter()
+admin_router = APIRouter(prefix="/admin", tags=["system admin"])
 
 
-@admin_router.post("/admin/promote")
+@admin_router.post("/promote")
 def promote_user(
     data: request.GeneralUsernameRequest,
     current_user: User = Depends(get_current_user),
@@ -27,7 +27,7 @@ def promote_user(
     return admin_service.promote(current_user, data.username)
 
 
-@admin_router.get("/admin/get_users")
+@admin_router.get("/get_users")
 def get_users(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(connect_db),
@@ -36,7 +36,7 @@ def get_users(
     return admin_service.get_users(current_user=current_user)
 
 
-@admin_router.get("/admin/get_user/{target_username}")
+@admin_router.get("/get_user/{target_username}")
 def get_user_by_username(
     target_username: str,
     current_user: User = Depends(get_current_user),
@@ -48,7 +48,7 @@ def get_user_by_username(
     )
 
 
-@admin_router.delete("/admin/delete_user/{target_username}")
+@admin_router.delete("/delete_user/{target_username}")
 def delete_user(
     target_username: str,
     current_user: User = Depends(get_current_user),
@@ -60,7 +60,7 @@ def delete_user(
     )
 
 
-@admin_router.get("/admin/sys_info")
+@admin_router.get("/sys_info")
 def get_sys_info(db: Session = Depends(connect_db)):
     """
     System information and DB health check

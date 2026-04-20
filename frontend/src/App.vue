@@ -14,6 +14,8 @@ onMounted(() => {
   const token = localStorage.getItem("token");
   if (!token) {
     router.push("/login");
+  } else {
+    router.push("/home");
   }
 });
 </script>

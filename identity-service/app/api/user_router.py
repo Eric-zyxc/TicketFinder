@@ -8,7 +8,7 @@ from app.models.user import User
 from app.service.auth import get_current_user
 from app.service.auth import create_access_token
 
-user_router = APIRouter()
+user_router = APIRouter(tags=["For regular users"])
 
 
 @user_router.post("/sign_up")

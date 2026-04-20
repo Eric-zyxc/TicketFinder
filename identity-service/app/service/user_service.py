@@ -25,7 +25,7 @@ class UserService:
         if not password_validator.check():  # check password
             return {"state": "fail", "message": "Password is not valid"}
 
-        if self.user_dal.contains(username):  # user exsists
+        if self.user_dal.contains(username=username):  # user exsists
             return {"state": "fail", "message": "User exists"}
 
         if self.user_dal.get_user_by_email(email=email):

@@ -27,7 +27,7 @@ def root():
     return {"message": "The system is running"}
 
 
-@identity_service.get("/admin/sys_info")
+@identity_service.get("/sys_info")
 def get_sys_info():
     return {
         "application name": "Ticket Finder",
