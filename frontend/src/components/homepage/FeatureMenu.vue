@@ -20,7 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import { P } from "vue-router/dist/index-BzEKChPW.js";
 </script>
 
 <style lang="css">
