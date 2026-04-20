@@ -1,8 +1,22 @@
 from fastapi import FastAPI
 from app.api.user_router import user_router
 from app.api.admin_router import admin_router
+from fastapi.middleware.cors import CORSMiddleware
 
 identity_service = FastAPI()
+
+
+identity_service.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 identity_service.include_router(user_router)
 identity_service.include_router(admin_router)

@@ -59,6 +59,13 @@ def login(
     access_token = create_access_token({"sub": form_data.username})
 
     return {
+        "state": "success",
+        "username" : result["username"],
+        "name": result["name"],
+        "age": result["age"],
+        "email": result["email"],
+        "phone": result["phone"],
+        "address": result["address"],
         "access_token": access_token,
         "token_type": "bearer",
     }

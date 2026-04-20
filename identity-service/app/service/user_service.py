@@ -28,6 +28,9 @@ class UserService:
         if self.user_dal.contains(username):  # user exsists
             return {"state": "fail", "message": "User exists"}
 
+        if self.user_dal.get_user_by_email(email=email):
+            return {"state": "fail", "message": "Email has already in use"}
+
         hashed_pwd = pwd_context.hash(password)
         new_user = self.user_dal.create_user(
             username=username,
@@ -93,7 +96,6 @@ class UserService:
             "email": user.email,
             "phone": user.phone,
             "role": user.role,
-            "note": user.note,
             "state": "active",
         }
         return res

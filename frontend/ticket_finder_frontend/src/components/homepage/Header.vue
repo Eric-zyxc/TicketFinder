@@ -15,17 +15,29 @@
 
 <style lang="css">
 .logo {
-  height: 60px;
+  height: 100%;
+  border-radius: 15px;
 }
 .header {
   display: flex;
-  padding: 10px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  font-size: 15px;
-  .menu_element {
-    margin-left: 10px;
-    padding: 5%;
-    color: #feffff;
+  border-radius: 15px;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+  font-size: 25px;
+  & .menu_element {
+    margin-inline: 25px;
+    color: #2e465d;
+    align-self: center;
   }
 }
 </style>

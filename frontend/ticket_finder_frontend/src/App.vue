@@ -19,12 +19,4 @@ onMounted(() => {
 </script>
 
 <style lang="css">
-.background {
-  background-color: rgba(168, 164, 164, 0.129);
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-block: 200px;
-}
 </style>

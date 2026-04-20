@@ -21,10 +21,10 @@
 </template>
 
 <script setup lang="ts">
-import Header from "@/components/Header.vue";
-import FeatureMenu from "@/components/FeatureMenu.vue";
-import UserMenu from "@/components/UserMenu.vue";
-import MainContent from "@/components/MainContent.vue";
+import Header from "@/components/homepage/Header.vue";
+import FeatureMenu from "@/components/homepage/FeatureMenu.vue";
+import UserMenu from "@/components/homepage/UserMenu.vue";
+import MainContent from "@/components/homepage/MainContent.vue";
 </script>
 
 <style lang="css">
@@ -36,13 +36,13 @@ import MainContent from "@/components/MainContent.vue";
 }
 .header {
   width: 100%;
-  height: 40px;
+  height: 100px;
   border-bottom: 1px solid #ccc;
-  background-color: rgba(34, 140, 239, 0.748);
+  background-color: rgba(232, 251, 248, 0.748);
 }
 .main_area {
   flex: 1;
-  margin-top: 30px;
+  margin-block: 5px;
   display: flex;
   width: 100%;
 }
@@ -57,8 +57,8 @@ import MainContent from "@/components/MainContent.vue";
   padding: 20px;
 }
 .right_menu {
-  width: 20%;
-  background-color: antiquewhite;
+  width: 15%;
+  background-color: rgb(198, 249, 247);
   border-radius: 20px;
   border: 2px solid #ccc;
 }
