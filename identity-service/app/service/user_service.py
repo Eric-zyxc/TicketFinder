@@ -40,7 +40,7 @@ class UserService:
             email=email,
             phone=phone,
             address=address,
-        )  # create new user
+        )  
 
         return {
             "state": "success",

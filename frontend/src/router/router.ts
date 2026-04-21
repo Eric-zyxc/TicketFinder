@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Login from "@/components/contents/Login.vue";
 import Home from "@/components/homepage/Home.vue";
-import SearchFlight from "@/components/contents/SearchFlight.vue";
-import searchHotel from "@/components/contents/SearchHotel.vue";
+import SearchFlight from "@/components/search_components/SearchFlight.vue";
+import searchHotel from "@/components/search_components/SearchHotel.vue";
 import signup from "@/components/contents/Signup.vue";
 
 const routes = [

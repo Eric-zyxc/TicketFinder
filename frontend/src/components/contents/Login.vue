@@ -1,21 +1,25 @@
 <template>
-  <div class="login_window">
-    <label>Hellow travaler!</label>
-    <label>Welcome to Ticket Finder!</label>
-
-    <div class="input_box">
-      <h4>Please Login</h4>
-      <label>Username: </label>
-      <input v-model="username" />
-      <label>Password: </label>
-      <input type="password" v-model="password" />
+  <div id="background">
+    <div class="greeting">
+      <p>Hellow travaler,</p>
+      <p>Welcome back!</p>
     </div>
 
-    <div class="button_line">
-      <button @click="login" class="btns">Login</button>
-      <button @click="gotoSignupPage" class="btns">Signup</button>
+    <div class="login_window">
+      <div class="input_box">
+        <h4>Please Login</h4>
+        <label>Username: </label>
+        <input v-model="username" />
+        <label>Password: </label>
+        <input type="password" v-model="password" />
+      </div>
+
+      <div class="button_line">
+        <button @click="login" class="btns">Login</button>
+        <button @click="gotoSignupPage" class="btns">Signup</button>
+      </div>
+      <p class="message">{{ message }}</p>
     </div>
-    <p class="message">{{ message }}</p>
   </div>
 </template>
 
@@ -64,8 +68,23 @@ async function gotoSignupPage() {
 </script>
 
 <style lang="css">
+#background {
+  background-color: rgb(212, 239, 252);
+  background-image: url("/src/asset/picture/bk1.png");
+  background-repeat: no-repeat;
+}
+
+.greeting {
+  display: flex;
+  flex-direction: column;
+  padding-top: 100px;
+  p {
+    font-size: xx-large;
+    font-family: fantasy;
+  }
+}
+
 .login_window {
-  margin-top: 200px;
   justify-self: center;
   font-family:
     system-ui,
@@ -81,13 +100,14 @@ async function gotoSignupPage() {
     sans-serif;
   font-style: bold;
   align-items: center;
-  background-color: rgb(191, 249, 249);
+  background-color: rgb(191, 227, 249);
   width: 30%;
   padding-block: 50px;
   display: flex;
   justify-content: center;
   border-radius: 20px;
   flex-direction: column;
+  box-shadow: 5px 5px 10px rgba(64, 60, 60, 0.3);
 }
 
 .input_box {
@@ -104,5 +124,12 @@ async function gotoSignupPage() {
   .btns:hover {
     background-color: rgba(226, 226, 226, 1);
   }
+}
+
+.message {
+  font-family: monospace;
+  margin-inline: 20%;
+  margin-block: 20px;
+  color: #605f5f;
 }
 </style>

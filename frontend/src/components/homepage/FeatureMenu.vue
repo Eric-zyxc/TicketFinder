@@ -23,10 +23,6 @@
 </script>
 
 <style lang="css">
-.block {
-  display: flex;
-  flex-direction: column;
-}
 
 .section {
   display: flex;

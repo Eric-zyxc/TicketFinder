@@ -72,14 +72,16 @@ async function logout() {
     margin-inline: 10%;
     border: 2px solid rgb(177, 181, 183);
     border-radius: 30px;
+
+    #init_text {
+      text-align: center;
+      font-size: 40px;
+      padding-top:13px;
+    }
     .user_initial {
-      #init_text {
-        text-align: center;
-        font-size: 40px;
-      }
       background-color: rgb(181, 216, 243);
-      height: 100px;
-      width: 100px;
+      height: 80px;
+      width: 80px;
       justify-self: center;
       margin-block: 10px;
       border: 2px solid rgb(251, 250, 250);
@@ -100,7 +102,9 @@ async function logout() {
         "Helvetica Neue",
         sans-serif;
       font-size: 15px;
+      font-weight: bold;
     }
+    padding-bottom: 10px;
   }
   .selections {
     display: flex;
@@ -120,7 +124,7 @@ async function logout() {
         "Open Sans",
         "Helvetica Neue",
         sans-serif;
-      font-size: larger;
+      font-size: medium;
       border-radius: 20px;
     }
     .user_button:hover {

@@ -1,35 +1,37 @@
 <template>
-  <div id="page">
-    <p class="title">User Information</p>
+  <div id="background">
+    <div id="page">
+      <p class="title">User Information</p>
 
-    <p class="text">Username <span class="start">*</span> :</p>
-    <input class="input" v-model="username" />
+      <p class="text">Username <span class="start">*</span> :</p>
+      <input class="input" v-model="username" />
 
-    <p class="text">Password <span class="start">*</span>:</p>
-    <input class="input" v-model="password" type="password" />
+      <p class="text">Password <span class="start">*</span>:</p>
+      <input class="input" v-model="password" type="password" />
 
-    <p class="text">Comfirm password <span class="start">*</span>:</p>
-    <input class="input" v-model="confirmPassword" type="password" />
+      <p class="text">Comfirm password <span class="start">*</span>:</p>
+      <input class="input" v-model="confirmPassword" type="password" />
 
-    <p class="text">Name:</p>
-    <input class="input" v-model="name" />
+      <p class="text">Name:</p>
+      <input class="input" v-model="name" />
 
-    <p class="text">Age:</p>
-    <input class="input" v-model="age" />
+      <p class="text">Age:</p>
+      <input class="input" v-model="age" />
 
-    <p class="text">Email:</p>
-    <input class="input" v-model="email" />
+      <p class="text">Email:</p>
+      <input class="input" v-model="email" />
 
-    <p class="text">Phone:</p>
-    <input class="input" v-model="phone" />
+      <p class="text">Phone:</p>
+      <input class="input" v-model="phone" />
 
-    <p class="text">Address:</p>
-    <input class="input" v-model="address" />
+      <p class="text">Address:</p>
+      <input class="input" v-model="address" />
 
-    <button class="signup_button" @click="signup">Sign Up</button>
-    <button class="back_button" @click="return_button">Back</button>
+      <button class="signup_button" @click="signup">Sign Up</button>
+      <button class="back_button" @click="return_button">Back</button>
 
-    <p class="return_message">{{ message }}</p>
+      <p class="return_message">{{ message }}</p>
+    </div>
   </div>
 </template>
 
@@ -92,16 +94,30 @@ function return_button() {
 </script>
 
 <style lang="css">
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
 .start {
   color: red;
+}
+
+#background {
+  background-color: rgb(212, 239, 252);
+  padding-top: 50px;
+  padding-bottom: 900px;
+  background-image: url("/src/asset/picture/bk1.png");
+  background-repeat: no-repeat;
 }
 
 #page {
   margin-inline: 30%;
   width: 40%;
   height: 850px;
-  background-color: rgb(191, 249, 249);
+  background-color: rgb(191, 227, 249);
   border-radius: 20px;
+  box-shadow: 5px 5px 10px rgba(64, 60, 60, 0.3);
   .text {
     margin-top: 10px;
     font-family:
@@ -143,7 +159,7 @@ function return_button() {
     width: 80px;
   }
   .signup_button:hover .back_button:hover {
-    background-color: rgba(84, 83, 83, 0.628);
+    background-color: rgba(84, 83, 83, 0.1);
   }
   .return_message {
     font-family: monospace;
