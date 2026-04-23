@@ -1,118 +1,98 @@
-# Ticket Finder Frontend
+# TicketFinder
 
-This is the frontend of the Ticket Finder project, built with Vue 3 + Vite.
-
----
-
-## 🚀 Getting Started
-
-### 1. Install dependencies
-
-Make sure you have Node.js installed:
-
-node -v
-npm -v
-
-Then install dependencies:
-
-npm install
+A full-stack travel booking system with hotel search, booking services, and a modular microservices architecture.
 
 ---
 
-### 2. Run development server
+## 🧱 Project Structure
+```
+TICKETFINDER/
+│
+├── frontend/             # Vue + Vite frontend
+├── travel-service/       # Main travel backend (search + booking)
+├── identity-service/     # Auth / user service
+├── config/               # Shared configs (optional)
+└── README.md
+```
 
+---
+
+## 🚀 Features
+
+### ✅ Implemented
+- 🔍 Hotel destination search (RapidAPI)
+- 🏨 Hotel search by destination
+- 🧾 Flight / hotel booking system (DB-backed)
+- 🔐 Authentication (JWT-based)
+- 🧱 Clean architecture:
+  - router → service → client / dal
+
+### 🔄 In Progress
+- Frontend integration
+- Flight search (API / mock)
+- Caching layer
+- UI improvements
+
+---
+
+## 🛠 Tech Stack
+
+### Backend
+- FastAPI
+- SQLAlchemy
+- PostgreSQL / SQLite
+- Pydantic
+
+### Frontend
+- Vue 3
+- Vite
+- TypeScript
+
+### External API
+- RapidAPI (Booking.com provider)
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/your-username/TicketFinder.git
+cd TicketFinder
+```
+
+### 2. Setup backend (travel-service)
+```bash
+cd travel-service
+pip install -r requirements.txt
+```
+Create .env:
+```env
+RAPIDAPI_KEY=your_key_here
+DATABASE_URL=sqlite:///./travel_booking.db
+SECRET_KEY=your_secret
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+```
+Run server:
+```bash
+uvicorn app.main:travel_service --reload
+```
+Swagger:
+```code
+http://127.0.0.1:8000/docs
+```
+---
+### 3. Setup frontend
+```bash
+cd frontend
+npm install ./dependency/requirements.txt
 npm run dev
-
-Open in browser:
-
+```
+App:
+```code
 http://localhost:5173
+```
 
----
-
-## 🧩 Project Structure
-
-src/
-  components/      # reusable components (Header, Login, etc.)
-  views/           # pages (LoginPage, HomePage)
-  router/          # vue-router config
-  api/             # API wrapper (fetch client)
-  assets/          # images, styles
-
----
-
-## 🔗 Backend Connection
-
-Frontend connects to FastAPI backend:
-
-http://127.0.0.1:8000
-
-Make sure backend service is running.
-
----
-
-## 🔐 Authentication
-
-- Login API returns a JWT token
-- Token is stored in:
-
-localStorage
-
-- Authenticated requests include:
-
-Authorization: Bearer <token>
-
----
-
-## 📦 Dependencies
-
-Main dependencies:
-
-vue
-vue-router
-vite
-
-Install manually if needed:
-
-npm install vue vue-router
-
----
-
-## 🛠 Development Notes
-
-- Uses Vue 3 Composition API
-- Routing handled by vue-router
-- API calls are wrapped in /src/api/
-- Layout includes:
-  - Header
-  - Left Menu
-  - Center Content
-  - Right Menu
-
----
-
-## ⚠️ Common Issues
-
-### CORS error
-
-Make sure backend enables CORS:
-
-allow_origins = ["http://localhost:5173"]
-
----
-
-### Token not working
-
-Check in browser:
-
-DevTools → Application → Local Storage
-
----
-
-## 🧠 Future Improvements
-
-- Add state management (Pinia)
-- Improve UI design
-- Add loading & error handling
-- Role-based routing (admin/user)
 
 
