@@ -6,6 +6,8 @@ from fastapi import Depends
 from app.core.database import connect_db
 from app.client.rapidapi_client import get_rapidapi_client
 
+MAX_CHEAPEST_HOTELS = 50
+
 
 class SearchingService:
     def __init__(self, db: Session, client: RapidApiClient):
@@ -31,14 +33,13 @@ class SearchingService:
             departure_date=data.departure_date,
             price_min=data.price_min,
             price_max=data.price_max,
-            sort_by=data.sort_by,
-            categories_filter=data.categories_filter,
         )
         if result.get("status") is False:
             return {"state": "success", "result": result}
 
         clean_hotels = []
 
+        print(result)
         for hotel in result["data"]["hotels"]:
             prop = hotel.get("property", {})
             price_breakdown = prop.get("priceBreakdown", {})
@@ -65,25 +66,42 @@ class SearchingService:
                     "checkout_from_time": checkout.get("fromTime"),
                     "checkout_until_time": checkout.get("untilTime"),
                     "gross_price": gross_price.get("value"),
-                    "gross_price_currency": gross_price.get("currency"),
                     "excluded_price": excluded_price.get("value"),
-                    "excluded_price_currency": excluded_price.get("currency"),
                     "main_photo": photos[0] if photos else None,
                     "photo_urls": photos,
                 }
             )
 
+        cheapest_hotels = get_cheapest_hotels(
+            clean_hotels, limit=MAX_CHEAPEST_HOTELS
+        )  # get cheapest 50 results
+
         return {
             "state": "success",
-            "timestamp": result.get("timestamp"),
-            "meta": result["data"].get("meta", []),
-            "hotels": clean_hotels,
+            "hotels": cheapest_hotels,
         }
 
+    def search_attraction_location(self, location: str):
+        result = self.client.search_attraction_location(query=location)
+        if result.get("status") is False:
+            return {"state": "fail", "result": result}
+        return {"state": "success", "result": result}
 
-# *************** instance ******************
+
+# *************** helper functions ******************
 def get_searching_service(
     db: Session = Depends(connect_db),
     client=Depends(get_rapidapi_client),
 ) -> SearchingService:
     return SearchingService(db=db, client=client)
+
+
+def get_cheapest_hotels(hotels: list[dict], limit: int = 50) -> list[dict]:
+    def hotel_price(hotel: dict) -> float:
+        price = hotel.get("gross_price")
+        if price is None:
+            return float("inf")
+        return float(price)
+
+    sorted_hotels = sorted(hotels, key=hotel_price)
+    return sorted_hotels[:limit]

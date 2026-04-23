@@ -10,6 +10,7 @@ from app.core.config import settings
 HOST = "booking-com15.p.rapidapi.com"
 SEARCH_DESTINATION_PATH = "api/v1/hotels/searchDestination"
 SEARCH_HOTEL_PATH = "api/v1/hotels/searchHotels"
+SEARCH_ATTRACTION_LOCATION = "api/v1/attraction/searchLocation"
 
 
 class RapidApiError(Exception):
@@ -34,8 +35,6 @@ class RapidApiClient:
         departure_date: date,
         price_min: int | None = None,
         price_max: int | None = None,
-        sort_by: str | None = None,
-        categories_filter: str | None = None,
     ):
         querystring = {
             "dest_id": str(dest_id),
@@ -52,15 +51,19 @@ class RapidApiClient:
             querystring["price_min"] = str(price_min)
         if price_max is not None:
             querystring["price_max"] = str(price_max)
-        if sort_by:
-            querystring["sort_by"] = sort_by
-        if categories_filter:
-            querystring["categories_filter"] = categories_filter
 
         print(querystring)
         return self._get(
             host=HOST,
             path=SEARCH_HOTEL_PATH,
+            params=querystring,
+        )
+
+    def search_attraction_location(self, query: str):
+        querystring = {"query": query, "languagecode": "en-us"}
+        return self._get(
+            host=HOST,
+            path=SEARCH_ATTRACTION_LOCATION,
             params=querystring,
         )
 
