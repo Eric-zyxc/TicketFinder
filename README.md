@@ -11,7 +11,7 @@ TICKETFINDER/
 ├── frontend/             # Vue + Vite frontend
 ├── travel-service/       # Main travel backend (search + booking)
 ├── identity-service/     # Auth / user service
-├── config/               # Shared configs (optional)
+├── pip_reqirements/      # pip requirements list
 └── README.md
 ```
 
@@ -86,7 +86,7 @@ http://127.0.0.1:8000/docs
 ### 3. Setup frontend
 ```bash
 cd frontend
-npm install ./dependency/requirements.txt
+npm install ./pip_requirements/requirements.txt
 npm run dev
 ```
 App:
