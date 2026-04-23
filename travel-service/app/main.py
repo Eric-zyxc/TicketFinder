@@ -22,4 +22,8 @@ travel_service.add_middleware(
 
 @travel_service.get("/")
 def root():
+    """
+    Check for the running status of the system
+    """
+    
     return "System is running"

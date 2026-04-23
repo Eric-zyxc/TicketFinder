@@ -56,16 +56,13 @@ class RapidApiClient:
             querystring["sort_by"] = sort_by
         if categories_filter:
             querystring["categories_filter"] = categories_filter
-            
+
         print(querystring)
         return self._get(
             host=HOST,
             path=SEARCH_HOTEL_PATH,
             params=querystring,
         )
-
-
-
 
     # qurey getter
     def _get(self, host: str, path: str, params: dict[str, str]):

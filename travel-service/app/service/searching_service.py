@@ -1,12 +1,7 @@
 from sqlalchemy.orm import Session
-from app.models.user import User
 from app.dal.ticket_dal import TicketDAL
 from app.client.rapidapi_client import RapidApiClient
 import app.schemas.request as request
-from datetime import date
-from decimal import Decimal
-from app.models.hotel_booking import HotelBooking
-from app.models.flight_booking import FlightBooking
 from fastapi import Depends
 from app.core.database import connect_db
 from app.client.rapidapi_client import get_rapidapi_client
@@ -53,28 +48,30 @@ class SearchingService:
             checkin = prop.get("checkin", {})
             checkout = prop.get("checkout", {})
 
-            clean_hotels.append({
-                "hotel_id": hotel.get("hotel_id"),
-                "name": prop.get("name"),
-                "review_score": prop.get("reviewScore"),
-                "review_score_word": prop.get("reviewScoreWord"),
-                "review_count": prop.get("reviewCount"),
-                "property_class": prop.get("propertyClass"),
-                "latitude": prop.get("latitude"),
-                "longitude": prop.get("longitude"),
-                "checkin_date": prop.get("checkinDate"),
-                "checkout_date": prop.get("checkoutDate"),
-                "checkin_from_time": checkin.get("fromTime"),
-                "checkin_until_time": checkin.get("untilTime"),
-                "checkout_from_time": checkout.get("fromTime"),
-                "checkout_until_time": checkout.get("untilTime"),
-                "gross_price": gross_price.get("value"),
-                "gross_price_currency": gross_price.get("currency"),
-                "excluded_price": excluded_price.get("value"),
-                "excluded_price_currency": excluded_price.get("currency"),
-                "main_photo": photos[0] if photos else None,
-                "photo_urls": photos,
-            })
+            clean_hotels.append(
+                {
+                    "hotel_id": hotel.get("hotel_id"),
+                    "name": prop.get("name"),
+                    "review_score": prop.get("reviewScore"),
+                    "review_score_word": prop.get("reviewScoreWord"),
+                    "review_count": prop.get("reviewCount"),
+                    "property_class": prop.get("propertyClass"),
+                    "latitude": prop.get("latitude"),
+                    "longitude": prop.get("longitude"),
+                    "checkin_date": prop.get("checkinDate"),
+                    "checkout_date": prop.get("checkoutDate"),
+                    "checkin_from_time": checkin.get("fromTime"),
+                    "checkin_until_time": checkin.get("untilTime"),
+                    "checkout_from_time": checkout.get("fromTime"),
+                    "checkout_until_time": checkout.get("untilTime"),
+                    "gross_price": gross_price.get("value"),
+                    "gross_price_currency": gross_price.get("currency"),
+                    "excluded_price": excluded_price.get("value"),
+                    "excluded_price_currency": excluded_price.get("currency"),
+                    "main_photo": photos[0] if photos else None,
+                    "photo_urls": photos,
+                }
+            )
 
         return {
             "state": "success",
@@ -84,7 +81,7 @@ class SearchingService:
         }
 
 
-# *************** instent ******************
+# *************** instance ******************
 def get_searching_service(
     db: Session = Depends(connect_db),
     client=Depends(get_rapidapi_client),
