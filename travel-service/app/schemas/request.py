@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from datetime import date
 from decimal import Decimal
+from typing import Optional
 
 
 class HotelBookingRequest(BaseModel):
@@ -20,3 +21,19 @@ class FlightBookingRequest(BaseModel):
     adult: int = 0
     children: int = 0
     price: Decimal
+
+
+class HotelSearchRequest(BaseModel):
+    dest_id: int
+    search_type: str = "CITY"
+    arrival_date: date
+    departure_date: date
+    price_min: Optional[int] = None
+    price_max: Optional[int] = None
+    sort_by: Optional[str] = None
+    categories_filter: Optional[str] = None
+
+
+
+class HotelDestinationRequest(BaseModel):
+    query: str

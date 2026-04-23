@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.booking_router import booking_router
+from app.api.searching_router import searching_router
 
 travel_service = FastAPI()
 travel_service.include_router(booking_router)
+travel_service.include_router(searching_router)
 
 travel_service.add_middleware(
     CORSMiddleware,

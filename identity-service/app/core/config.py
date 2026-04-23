@@ -1,15 +1,26 @@
 import os
 from dotenv import load_dotenv
+from dataclasses import dataclass
+from functools import lru_cache
 
 load_dotenv()
 
 
+@dataclass(frozen=True)
 class Settings:
-    DATABASE_URL: str = os.getenv("DATABASE_URL")
-
-    SECRET_KEY: str = os.getenv("SECRET_KEY")
-
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
+    ACCESS_TOKEN_EXPIRE_MINUTES: int | None
+    SECRET_KEY: str | None
+    DATABASE_URL: str | None
 
 
-settings = Settings()
+@lru_cache(maxsize=1)
+def get_settings() -> Settings:
+
+    return Settings(
+        DATABASE_URL=os.getenv("DATABASE_URL"),
+        SECRET_KEY=os.getenv("SECRET_KEY"),
+        ACCESS_TOKEN_EXPIRE_MINUTES=int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")),
+    )
+
+
+settings = get_settings()
