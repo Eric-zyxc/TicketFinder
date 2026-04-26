@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
-from app.dal.user_dal import UserDAL
+from app.dal.user_DAO import UserDAO
 from app.service.password_validator import PasswordValidator
 from app.models.user import User
 
@@ -9,7 +9,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 class UserService:
     def __init__(self, db: Session):
-        self.user_dal = UserDAL(db)
+        self.user_dal = UserDAO(db)
 
     def sign_up(
         self,

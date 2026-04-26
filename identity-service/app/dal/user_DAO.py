@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from app.models.user import User
 
 
-class UserDAL:
+class UserDAO:
     def __init__(self, db: Session):
         self.db = db
 

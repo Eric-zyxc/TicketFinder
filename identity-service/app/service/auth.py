@@ -5,7 +5,7 @@ from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from app.core.database import connect_db
-from app.dal.user_dal import UserDAL
+from app.dal.user_DAO import UserDAO
 
 SECRET_KEY = "admin"
 ALGORITHM = "HS256"
@@ -31,7 +31,7 @@ def get_current_user(
     except JWTError:
         raise credentials_exception
 
-    user_dal = UserDAL(db)
+    user_dal = UserDAO(db)
     user = user_dal.get_user_by_username(username)
 
     if not user:
@@ -43,7 +43,7 @@ def get_current_user(
 def create_access_token(data: dict):
     to_encode = data.copy()
 
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire = datetime.now() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
 
     to_encode.update({"exp": expire})
 

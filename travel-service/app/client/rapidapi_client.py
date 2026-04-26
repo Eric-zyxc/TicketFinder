@@ -4,13 +4,8 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 from datetime import date
-
+from app.core.api_paths import ApiPaths
 from app.core.config import settings
-
-HOST = "booking-com15.p.rapidapi.com"
-SEARCH_DESTINATION_PATH = "api/v1/hotels/searchDestination"
-SEARCH_HOTEL_PATH = "api/v1/hotels/searchHotels"
-SEARCH_ATTRACTION_LOCATION = "api/v1/attraction/searchLocation"
 
 
 class RapidApiError(Exception):
@@ -23,10 +18,15 @@ class RapidApiError(Exception):
 class RapidApiClient:
     def __init__(self, api_key: str) -> None:
         self.api_key = api_key
+        self.paths = ApiPaths()
 
     def search_destination(self, query: str):
         querystring = {"query": query}
-        return self._get(host=HOST, path=SEARCH_DESTINATION_PATH, params=querystring)
+        return self._get(
+            host=ApiPaths.HOST,
+            path=ApiPaths.SEARCH_DESTINATION_PATH,
+            params=querystring,
+        )
 
     def search_hotel(
         self,
@@ -52,18 +52,55 @@ class RapidApiClient:
         if price_max is not None:
             querystring["price_max"] = str(price_max)
 
-        print(querystring)
         return self._get(
-            host=HOST,
-            path=SEARCH_HOTEL_PATH,
+            host=ApiPaths.HOST,
+            path=ApiPaths.SEARCH_HOTEL_PATH,
             params=querystring,
         )
 
-    def search_attraction_location(self, query: str):
-        querystring = {"query": query, "languagecode": "en-us"}
+    def search_attraction_location(self, location: str):
+        querystring = {"query": location, "languagecode": "en-us"}
         return self._get(
-            host=HOST,
-            path=SEARCH_ATTRACTION_LOCATION,
+            host=ApiPaths.HOST,
+            path=ApiPaths.SEARCH_ATTRACTION_LOCATION,
+            params=querystring,
+        )
+
+    def search_attraction_by_id(self, attraction_id: str, date: date):
+        querystring = {
+            "id": attraction_id,
+            "sortBy": "lowest_price",
+            "startDate": date.strftime("%Y-%m-%d"),
+        }
+        return self._get(
+            host=ApiPaths.HOST,
+            path=ApiPaths.SEARCH_ATTRACTION_BY_ID,
+            params=querystring,
+        )
+
+    def search_flight_location(self, location: str):
+        querystring = {"query": location}
+
+        return self._get(
+            host=ApiPaths.HOST,
+            path=ApiPaths.SEARCH_FLIGHT_LOCATION,
+            params=querystring,
+        )
+
+    def search_flights(
+        self, from_id: str, to_id: str, departure_date: date, adults: int, children: str
+    ):
+        querystring = {
+            "fromId": from_id,
+            "toId": to_id,
+            "departDate": departure_date.strftime("%Y-%m-%d"),
+            "adults": str(adults),
+            "children": children,
+        }
+
+        return self._get(
+            host=ApiPaths.HOST,
+            path=ApiPaths.SEARCH_FLIGHTS,
             params=querystring,
         )
 
