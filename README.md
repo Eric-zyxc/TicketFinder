@@ -86,7 +86,7 @@ http://127.0.0.1:8000/docs
 ### 3. Setup frontend
 ```bash
 cd frontend
-npm install ./pip_requirements/requirements.txt
+npm install ./requirements.txt
 npm run dev
 ```
 App:
