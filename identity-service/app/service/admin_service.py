@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
-from app.dal.user_dal import UserDAL
+from app.dal.user_DAO import UserDAO
 from app.models.user import User
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -8,7 +8,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 class AdminService:
     def __init__(self, db: Session):
-        self.user_dal = UserDAL(db)
+        self.user_dal = UserDAO(db)
 
     def promote(self, current_user: User, username: str):
         cur_user = self.user_dal.get_user_by_id(current_user.id)

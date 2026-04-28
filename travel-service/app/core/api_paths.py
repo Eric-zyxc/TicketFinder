@@ -6,3 +6,5 @@ class ApiPaths:
     SEARCH_ATTRACTION_BY_ID = "api/v1/attraction/searchAttractions"
     SEARCH_FLIGHT_LOCATION = "api/v1/flights/searchDestination"
     SEARCH_FLIGHTS = "api/v1/flights/searchFlights"
+    SEARCH_ATTRACTION_BY_SLUG = "api/v1/attraction/getAttractionDetails"
+    SEARCH_ATTRACTION_AVALIBILITIES = "api/v1/attraction/getAvailability"

@@ -9,9 +9,9 @@ from app.dal.user_DAO import UserDAO
 
 SECRET_KEY = "admin"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 300
+ACCESS_TOKEN_EXPIRE_MINUTES = 3000
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
 
 def get_current_user(
@@ -21,8 +21,8 @@ def get_current_user(
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid token",
+        headers={"WWW-Authenticate": "Bearer"},
     )
-
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username = payload.get("sub")
@@ -30,23 +30,16 @@ def get_current_user(
             raise credentials_exception
     except JWTError:
         raise credentials_exception
-
     user_dal = UserDAO(db)
     user = user_dal.get_user_by_username(username)
-
     if not user:
         raise credentials_exception
-
     return user
 
 
 def create_access_token(data: dict):
     to_encode = data.copy()
-
-    expire = datetime.now() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-
+    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
-
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-
     return encoded_jwt

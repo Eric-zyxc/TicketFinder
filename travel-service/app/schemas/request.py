@@ -7,7 +7,7 @@ from datetime import datetime
 
 class HotelBookingRequest(BaseModel):
     # -------- hotel --------
-    hotel_id: int
+    third_party_id: int
     name: Optional[str] = None
     latitude: Optional[float] = None
     longitude: Optional[float] = None
@@ -56,8 +56,8 @@ class HotelSearchRequest(BaseModel):
     search_type: str = "CITY"
     arrival_date: date
     departure_date: date
-    price_min: Optional[int] = None
-    price_max: Optional[int] = None
+    price_min: Optional[int] = 0
+    price_max: Optional[int] = 10000
 
 
 class SearchFlightsRequest(BaseModel):
@@ -66,3 +66,35 @@ class SearchFlightsRequest(BaseModel):
     departure_date: date
     adults: int
     children: str
+
+
+class AttractionBookingRequest(BaseModel):
+    # -------- attraction info --------
+    third_party_id: str
+    slug: Optional[str] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
+    short_description: Optional[str] = None
+    operator: Optional[str] = None
+    city: Optional[str] = None
+    departure_address: Optional[str] = None
+    arrival_address: Optional[str] = None
+    primary_photo: Optional[str] = None
+    free_cancellation: Optional[bool] = None
+    sub_photo_1: Optional[str] = None
+    sub_photo_2: Optional[str] = None
+    sub_photo_3: Optional[str] = None
+    languages: Optional[list[str]] = None
+    whats_included: Optional[list[str]] = None
+    not_included: Optional[list[str]] = None
+
+    # -------- booking info --------
+    owner_id: int
+    agent_id: int
+    time_slot_id: Optional[str] = None
+    offer_id: Optional[str] = None
+    offer_item_id: Optional[str] = None
+    start_time: Optional[datetime] = None
+    language: Optional[str] = None
+    price: Decimal
+    currency: str

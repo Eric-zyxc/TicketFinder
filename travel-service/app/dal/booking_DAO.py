@@ -4,6 +4,8 @@ from app.models.hotel import Hotel
 from app.models.flight import Flight
 from app.models.hotel_booking import HotelBooking
 from app.models.flight_booking import FlightBooking
+from app.models.attraction import Attraction
+from app.models.attraction_booking import AttractionBooking
 
 
 class BookingDAO:
@@ -25,6 +27,12 @@ class BookingDAO:
 
     def get_flight_booking_by_id(self, id: int):
         booking = self.db.query(FlightBooking).filter(FlightBooking.id == id).first()
+        return booking
+
+    def get_attraction_booking_by_id(self, id: int):
+        booking = (
+            self.db.query(AttractionBooking).filter(AttractionBooking.id == id).first()
+        )
         return booking
 
     # setters:
@@ -50,8 +58,10 @@ class BookingDAO:
         flight = self.db.query(Flight).filter(Flight.token == token).first()
         return flight
 
-    def get_hotel_by_hotel_id(self, hotel_id: int):
-        hotel = self.db.query(Hotel).filter(Hotel.hotel_id == hotel_id).first()
+    def get_hotel_by_third_party_id(self, third_party_id: int):
+        hotel = (
+            self.db.query(Hotel).filter(Hotel.third_party_id == third_party_id).first()
+        )
         return hotel
 
     def post_hotel(self, hotel: Hotel):
@@ -59,6 +69,26 @@ class BookingDAO:
         self.db.commit()
         self.db.refresh(hotel)
         return hotel
+
+    def get_attraction_by_third_party_id(self, third_party_id: str):
+        attraction = (
+            self.db.query(Attraction)
+            .filter(Attraction.third_party_id == third_party_id)
+            .first()
+        )
+        return attraction
+
+    def post_attraction(self, attraction: Attraction):
+        self.db.add(attraction)
+        self.db.commit()
+        self.db.refresh(attraction)
+        return attraction
+
+    def post_attraction_booking(self, attraction_booking: AttractionBooking):
+        self.db.add(attraction_booking)
+        self.db.commit()
+        self.db.refresh(attraction_booking)
+        return attraction_booking
 
     def delete_hotel_booking(self, booking: HotelBooking) -> bool:
         try:
@@ -77,3 +107,29 @@ class BookingDAO:
         except Exception:
             self.db.rollback()
             return False
+
+    def delete_attraction_booking(self, booking: AttractionBooking) -> bool:
+        try:
+            self.db.delete(booking)
+            self.db.commit()
+            return True
+        except Exception:
+            self.db.rollback()
+            return False
+
+    def get_attraction_bookings_by_user_id(self, user_id: int):
+        return (
+            self.db.query(AttractionBooking)
+            .filter(AttractionBooking.owner_id == user_id)
+            .all()
+        )
+
+    def get_hotel_bookings_by_user_id(self, user_id: int):
+        return (
+            self.db.query(HotelBooking).filter(HotelBooking.owner_id == user_id).all()
+        )
+
+    def get_flight_bookings_by_user_id(self, user_id: int):
+        return (
+            self.db.query(FlightBooking).filter(FlightBooking.owner_id == user_id).all()
+        )

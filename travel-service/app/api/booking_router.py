@@ -31,6 +31,15 @@ def book_flight(
     return booking_service.book_flight(data=data)
 
 
+@booking_router.post("/attraction")
+def book_attraction(
+    data: request.AttractionBookingRequest, db: Session = Depends(connect_db)
+):
+    """ """
+    booking_service = BookingService(db=db)
+    return booking_service.book_attraction(data=data)
+
+
 @booking_router.delete("/delete/hotel_booking")
 def delete_hotel_booking(booking_id: int, db: Session = Depends(connect_db)):
     booking_service = BookingService(db=db)
@@ -41,3 +50,27 @@ def delete_hotel_booking(booking_id: int, db: Session = Depends(connect_db)):
 def delete_hotel_booking(booking_id: int, db: Session = Depends(connect_db)):
     booking_service = BookingService(db=db)
     return booking_service.delete_flight_booking(booking_id=booking_id)
+
+
+@booking_router.delete("/delete/attraction_booking")
+def delete_attraction_booking(booking_id: int, db: Session = Depends(connect_db)):
+    booking_service = BookingService(db=db)
+    return booking_service.delete_attraction_booking(booking_id=booking_id)
+
+
+@booking_router.get("/get/attraction_booking")
+def get_attraction_bookings_by_user_id(user_id: int, db: Session = Depends(connect_db)):
+    booking_service = BookingService(db=db)
+    return booking_service.get_attraction_bookings_by_user_id(user_id)
+
+
+@booking_router.get("/get/hotel_booking")
+def get_hotel_bookings_by_user_id(user_id: int, db: Session = Depends(connect_db)):
+    booking_service = BookingService(db=db)
+    return booking_service.get_hotel_bookings_by_user_id(user_id)
+
+
+@booking_router.get("/get/flight_booking")
+def get_flight_bookings_by_user_id(user_id: int, db: Session = Depends(connect_db)):
+    booking_service = BookingService(db=db)
+    return booking_service.get_flight_bookings_by_user_id(user_id)

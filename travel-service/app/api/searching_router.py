@@ -13,7 +13,12 @@ def search_hotel_destination(
     searching_service: SearchingService = Depends(get_searching_service),
 ):
     """
-    Parameter: A keyword of a city/airport/area
+    Description:\n
+        Search destination ID by a keyword of a city, area, street, etc. \n
+    Parameter: \n
+        A keyword of a city/airport/area\n
+    Response:\n
+        A list of all related result about the input keyword and their destination ID and information.\n
     """
     try:
         return searching_service.search_destination(query=dest)
@@ -29,6 +34,8 @@ def search_hotel(
     searching_service: SearchingService = Depends(get_searching_service),
 ):
     """
+    Description:\n
+        Search hotel by the destination id. \n
     Parameter:\n
         Required:\n
             dest_id: example: -1109108 (San Jose), 20079110(Las Vegas), 20014181(LA), 2008835(NYC)\n
@@ -37,6 +44,8 @@ def search_hotel(
         Optional:
             price_min: default=0\n
             price_max: default=0\n
+    Response:\n
+        JSON: a list of all avalible hotels in the destination area\n
     """
     try:
         return searching_service.search_hotel(data=data)
@@ -58,23 +67,23 @@ def search_attraction_location(
         ) from error
 
 
-@searching_router.post("/attraction_detail")
-def search_attraction_detail(
-    attraction_id: str,
+@searching_router.post("/attraction_list")
+def search_attraction_list(
+    location_id: str,
     date: date,
     searching_service: SearchingService = Depends(get_searching_service),
 ):
     """
-    Usage:\n
+    Description:\n
         get the attraction details by attraction id. result will be sorted by the lowest price automatically\n
     Parameters:\n
-        id: str   (Example: eyJwaW5uZWRQcm9kdWN0IjoiUFJmMmtlMEROM1FNIiwidWZpIjotMjA4OTYxMH0=)\n
-        date: date    (result will be sorted by this start date)\n
+        id: str               (Example: eyJwaW5uZWRQcm9kdWN0IjoiUFJmMmtlMEROM1FNIiwidWZpIjotMjA4OTYxMH0=)\n
+        date: date            (Form: YYYY-MM-DD, result will be sorted by this start date)\n
     """
 
     try:
-        return searching_service.search_attraction_detail(
-            attraction_id=attraction_id, date=date
+        return searching_service.search_attraction_list(
+            location_id=location_id, date=date
         )
     except RapidApiError as error:
         raise HTTPException(
@@ -82,7 +91,54 @@ def search_attraction_detail(
         ) from error
 
 
-@searching_router.post("/flight_location")
+@searching_router.post("/attraction/detials")
+def search_attraction_details(
+    attraction_slug: str,
+    searching_service: SearchingService = Depends(get_searching_service),
+):
+    """
+    Description:\n
+        get the detail information about a certain attraction.\n
+    Parameters"\n
+        attraction_slug: str        (Example: prniftrnyibs-full-day-guided-san-jose-del-cabo-and-cabo-san-lucas-tour)\n
+    Response:\n
+        JSON, with details about the attraction, include name, description, terms, photos, reviews, etc. \n
+    """
+    try:
+        return searching_service.search_attraction_details(
+            attraction_slug=attraction_slug
+        )
+    except RapidApiError as error:
+        raise HTTPException(
+            status_code=error.status_code, detail=error.detail
+        ) from error
+
+
+@searching_router.post("/attraction/avalibilities")
+def search_attraction_avalibilities(
+    attraction_slug: str,
+    date: date,
+    searching_service: SearchingService = Depends(get_searching_service),
+):
+    """
+    Description:\n
+        get the avalibilities of a certain attraction product.\n
+    Parameter: \n
+        attraction_slug: str    (Example: prniftrnyibs-full-day-guided-san-jose-del-cabo-and-cabo-san-lucas-tour)\n
+    Response:\n
+        JSON, the detials of the avalibilities of the product.\n
+    """
+    try:
+        return searching_service.search_attraction_avalibilities(
+            attraction_slug=attraction_slug, date=date
+        )
+    except RapidApiError as error:
+        raise HTTPException(
+            status_code=error.status_code, detail=error.detail
+        ) from error
+
+
+@searching_router.post("/airports")
 def search_flight_location(
     location: str,
     searching_service: SearchingService = Depends(get_searching_service),
@@ -101,7 +157,7 @@ def search_flight_location(
         ) from error
 
 
-@searching_router.post("/flight_search")
+@searching_router.post("/flights")
 def search_flights(
     request_form: request.SearchFlightsRequest,
     searching_service: SearchingService = Depends(get_searching_service),

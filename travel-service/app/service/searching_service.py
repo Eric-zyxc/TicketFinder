@@ -81,11 +81,13 @@ class SearchingService:
         result = self.client.search_attraction_location(location=location)
         if result.get("status") is False:
             return {"state": "fail", "result": result}
-        return {"state": "success", "result": result}
+        data = result.get("data")
+        product_list = data.get("products")
+        return {"state": "success", "result": product_list}
 
-    def search_attraction_detail(self, attraction_id: str, date: date):
-        result = self.client.search_attraction_by_id(
-            attraction_id=attraction_id, date=date
+    def search_attraction_list(self, location_id: str, date: date):
+        result = self.client.search_attraction_list_by_dest_id(
+            location_id=location_id, date=date
         )
         if result.get("status") is False:
             return {"state": "fail", "result": result}
@@ -117,6 +119,128 @@ class SearchingService:
             )
 
         return {"state": "success", "result": cleaned_result}
+
+    def search_attraction_details(self, attraction_slug: str):
+        result = self.client.search_attraction_details(attraction_slug)
+        if result.get("status") is False:
+            return {"state": "fail", "result": result}
+        product = result.get("data") or {}
+        photos = product.get("photos") or []
+        cleaned_photos = []
+        for photo in photos:
+            if not isinstance(photo, dict):
+                continue
+            medium = photo.get("medium")
+            if medium:
+                cleaned_photos.append(medium)
+        offers = product.get("offers") or []
+        cleaned_offers = []
+        for offer in offers:
+            if not isinstance(offer, dict):
+                continue
+            offer_id = offer.get("id")
+            availability_type = offer.get("availabilityType")
+            cleaned_offers.append(
+                {
+                    "id": offer_id,
+                    "availability_type": availability_type,
+                }
+            )
+        representative_price = product.get("representativePrice") or {}
+        ufi_details = product.get("ufiDetails") or {}
+        addresses = product.get("addresses") or {}
+        cancellation_policy = product.get("cancellationPolicy") or {}
+        primary_photo = product.get("primaryPhoto") or {}
+        reviews_obj = product.get("reviews") or {}
+        departure_list = addresses.get("departure") or []
+        arrival_list = addresses.get("arrival") or []
+        departure_info = departure_list[0] if departure_list else {}
+        arrival_info = arrival_list[0] if arrival_list else {}
+        cleaned_result = {
+            "id": product.get("id"),
+            "name": product.get("name"),
+            "description": product.get("description"),
+            "price": {
+                "amount": representative_price.get("chargeAmount"),
+                "currency": representative_price.get("currency"),
+            },
+            "location": {
+                "city": ufi_details.get("bCityName"),
+                "departure": departure_info.get("address"),
+                "arrival": arrival_info.get("address"),
+            },
+            "cancellation": {
+                "free": cancellation_policy.get("hasFreeCancellation"),
+            },
+            "offers": cleaned_offers,
+            "whatsIncluded": product.get("whatsIncluded") or [],
+            "notIncluded": product.get("notIncluded") or [],
+            "languages": product.get("guideSupportedLanguages") or [],
+            "operator": product.get("operatedBy"),
+            "primary_photo": primary_photo.get("small"),
+            "photos": cleaned_photos,
+            "reviews": reviews_obj.get("reviews") or [],
+        }
+
+        return {"state": "success", "result": cleaned_result}
+
+    def search_attraction_avalibilities(self, attraction_slug: str, date: date):
+        result = self.client.search_attraction_avalibilities(
+            attraction_slug=attraction_slug, date=date
+        )
+        slots = result.get("data", [])
+        cleaned_slots = []
+        for slot in slots:
+            cleaned_offers = []
+            for offer in slot.get("timeSlotOffers", []):
+                cleaned_items = []
+                for item in offer.get("items", []):
+                    cleaned_items.append(
+                        {
+                            "item_id": item.get("id"),
+                            "offer_item_id": item.get("offerItemId"),
+                            "type": item.get("type"),
+                            "label": item.get("label"),
+                            "language": item.get("languageOption", {}).get("language"),
+                            "price": item.get("price", {}).get("chargeAmount"),
+                            "currency": item.get("price", {}).get("currency"),
+                            "free_cancellation": item.get("cancellationPolicy", {}).get(
+                                "hasFreeCancellation"
+                            ),
+                            "cancellation_period": item.get(
+                                "cancellationPolicy", {}
+                            ).get("period"),
+                            "max_group_size": item.get("constraint", {}).get(
+                                "maxGroupSize"
+                            ),
+                            "traveler_count_required": item.get(
+                                "travelerCountRequired"
+                            ),
+                            "tickets_available": item.get("ticketsAvailable"),
+                            "max_per_reservation": item.get("maxPerReservation"),
+                            "min_per_reservation": item.get("minPerReservation"),
+                        }
+                    )
+                cleaned_offers.append(
+                    {
+                        "offer_id": offer.get("id"),
+                        "label": offer.get("label"),
+                        "description": offer.get("description"),
+                        "items": cleaned_items,
+                    }
+                )
+            cleaned_slots.append(
+                {
+                    "time_slot_id": slot.get("timeSlotId"),
+                    "start": slot.get("start"),
+                    "full_day": slot.get("fullDay"),
+                    "offers": cleaned_offers,
+                }
+            )
+        return {
+            "state": "success",
+            "time_slots": cleaned_slots,
+        }
 
     def search_flight_location(self, location: str):
         result = self.client.search_flight_location(location=location)

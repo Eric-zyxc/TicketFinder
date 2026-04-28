@@ -66,15 +66,26 @@ class RapidApiClient:
             params=querystring,
         )
 
-    def search_attraction_by_id(self, attraction_id: str, date: date):
+    def search_attraction_list_by_dest_id(self, location_id: str, date: date):
         querystring = {
-            "id": attraction_id,
+            "id": location_id,
             "sortBy": "lowest_price",
             "startDate": date.strftime("%Y-%m-%d"),
         }
         return self._get(
             host=ApiPaths.HOST,
             path=ApiPaths.SEARCH_ATTRACTION_BY_ID,
+            params=querystring,
+        )
+
+    def search_attraction_details(self, attraction_slug: str):
+        querystring = {
+            "slug": attraction_slug,
+            "languagecode": "en-us",
+        }
+        return self._get(
+            host=ApiPaths.HOST,
+            path=ApiPaths.SEARCH_ATTRACTION_BY_SLUG,
             params=querystring,
         )
 
@@ -86,6 +97,20 @@ class RapidApiClient:
             path=ApiPaths.SEARCH_FLIGHT_LOCATION,
             params=querystring,
         )
+
+    def search_attraction_avalibilities(self, attraction_slug: str, date: date):
+        querystring = {
+            "slug": attraction_slug,
+            "date": date.strftime("%Y-%m-%d"),
+            "languagecode": "en-us",
+            "currency_code": "AED",
+        }
+        return self._get(
+            host=ApiPaths.HOST,
+            path=ApiPaths.SEARCH_ATTRACTION_AVALIBILITIES,
+            params=querystring,
+        )
+        
 
     def search_flights(
         self, from_id: str, to_id: str, departure_date: date, adults: int, children: str

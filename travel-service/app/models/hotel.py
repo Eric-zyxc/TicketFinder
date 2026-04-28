@@ -10,7 +10,7 @@ class Hotel(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
 
     # hotel info
-    hotel_id: Mapped[int] = mapped_column(Integer, unique=True, nullable=False)
+    third_party_id: Mapped[int] = mapped_column(Integer, unique=True, nullable=False)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     review_score: Mapped[float | None] = mapped_column(Float)
     review_score_word: Mapped[str | None] = mapped_column(String(50))
