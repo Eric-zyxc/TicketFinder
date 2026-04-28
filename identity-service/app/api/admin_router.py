@@ -60,6 +60,14 @@ def delete_user(
     )
 
 
+@admin_router.get("/get_user_count")
+def get_user_count(
+    current_user: User = Depends(get_current_user), db: Session = Depends(connect_db)
+):
+    admin_service = AdminService(db=db)
+    return admin_service.get_user_count(current_user=current_user)
+
+
 @admin_router.get("/sys_info")
 def get_sys_info(db: Session = Depends(connect_db)):
     """

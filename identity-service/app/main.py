@@ -31,8 +31,7 @@ def root():
 def get_sys_info():
     return {
         "application name": "Ticket Finder",
-        "python version": "3.10.20",
-        "fastapi version": "0.0.24",
-        "database": "postgres (PostgreSQL) 18.3",
-        "uvicorn": "uvicorn 0.42.0 with CPython 3.10.20 on Darwin",
+        "version" : "prototype v-0.1",
+        "certificate":"N/A",
+        
     }

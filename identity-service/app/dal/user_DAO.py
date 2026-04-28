@@ -31,9 +31,9 @@ class UserDAO:
         self.db.refresh(user)
         return user
 
-    def get_user_by_email(self, email:str):
+    def get_user_by_email(self, email: str):
         return self.db.query(User).filter(User.email == email).first()
-    
+
     def get_user_by_username(self, username: str):
         return self.db.query(User).filter(User.username == username).first()
 
@@ -84,3 +84,10 @@ class UserDAO:
         self.db.delete(user)
         self.db.commit()
         return {"state": "success", "message": "User is deleted", "username": username}
+
+    def get_user_count(self):
+        try:
+            count = self.db.query(User).count()
+            return {"state": "success", "result": count}
+        except Exception:
+            return {"state": "fail", "result": "failed to get user count"}
