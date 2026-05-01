@@ -1,34 +1,39 @@
 <template>
   <div class="home_page">
     <div class="header">
-      <Header />
+      <Header @switch-view="switchView" />
     </div>
 
     <div class="main_area">
       <div class="left_menu">
-        <FeatureMenu />
+        <FeatureMenu @switch-view="switchView" />
       </div>
 
       <div class="center_area">
-        <router-view />
+        <MainContent :current-view="currentView" />
       </div>
 
       <div class="right_menu">
-        <UserMenu />
+        <UserMenu @switch-view="switchView" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import Header from "@/components/contents/Header.vue";
 import FeatureMenu from "@/components/homepage/FeatureMenu.vue";
 import UserMenu from "@/components/homepage/UserMenu.vue";
 import MainContent from "@/components/homepage/MainContent.vue";
+type ViewType = "home" | "profile";
+const currentView = ref<ViewType>("home");
+const switchView = (view: ViewType) => {
+  currentView.value = view;
+};
 </script>
 
 <style lang="css">
-
 .home_page {
   width: 100%;
   display: flex;
@@ -46,7 +51,7 @@ import MainContent from "@/components/homepage/MainContent.vue";
   flex: 1;
   display: flex;
   width: 100%;
-  height: 850px;
+  height: 950px;
 }
 .left_menu {
   width: 20%;

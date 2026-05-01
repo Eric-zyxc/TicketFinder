@@ -8,7 +8,7 @@
     </div>
 
     <div class="selections">
-      <button class="user_button">👤 Profile</button>
+      <button class="user_button" @click="emit('switch-view', 'profile')">👤 Profile</button>
       <button class="user_button">✈️ Flight History</button>
       <button class="user_button">🏨 Hotel History</button>
       <button class="user_button">🎁 Rewards & Gifts</button>
@@ -21,6 +21,8 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { identity_request } from "@/router/api_client";
+
+const emit = defineEmits(['switch-view'])
 
 const router = useRouter();
 
@@ -60,6 +62,7 @@ async function logout() {
   }
   return;
 }
+
 </script>
 
 <style lang="css">
@@ -67,7 +70,7 @@ async function logout() {
   display: flex;
   flex-direction: column;
   .profile {
-    background-color: rgb(170, 233, 251);
+    background-color: rgba(170, 233, 251, 0.596);
     margin-block: 5%;
     margin-inline: 10%;
     border: 2px solid rgb(177, 181, 183);
@@ -76,7 +79,7 @@ async function logout() {
     #init_text {
       text-align: center;
       font-size: 40px;
-      padding-top:13px;
+      padding-top: 13px;
     }
     .user_initial {
       background-color: rgb(181, 216, 243);

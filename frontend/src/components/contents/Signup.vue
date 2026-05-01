@@ -106,7 +106,7 @@ html, body {
 #background {
   background-color: rgb(212, 239, 252);
   padding-top: 50px;
-  padding-bottom: 900px;
+  padding-bottom: 700px;
   background-image: url("/src/asset/picture/bk1.png");
   background-repeat: no-repeat;
 }
