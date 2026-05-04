@@ -26,4 +26,9 @@ onMounted(() => {
   padding: 0;
   box-sizing: border-box;
 }
+button:hover {
+  background-color: #aee4ee;
+  scale: 105%;
+  box-shadow: 0 10px 20px rgba(40, 80, 110, 0.14);
+}
 </style>

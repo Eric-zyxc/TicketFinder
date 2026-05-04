@@ -40,7 +40,7 @@ class UserService:
             email=email,
             phone=phone,
             address=address,
-        )  
+        )
 
         return {
             "state": "success",
@@ -87,7 +87,7 @@ class UserService:
 
     def to_dict(self, user: User):
         res = {
-            "user_id": user.id,
+            "id": user.id,
             "username": user.username,
             "password": user.password,
             "name": user.name,
@@ -104,11 +104,9 @@ class UserService:
         target_user = self.user_dal.get_user_by_username(username)
         if not target_user:
             return {"state": "fail", "message": "Cannot find user"}
-
-        if pwd_context.verify(password, target_user.password):
-            return self.to_dict(target_user)
-
-        return {"state": "fail", "message": "Password is not correct"}
+        if not pwd_context.verify(password, target_user.password):
+            return {"state": "fail", "message": "Password is not correct"}
+        return self.to_dict(target_user)
 
     def logout(self, user: User):
         target_user = self.user_dal.get_user_by_id(user.id)
@@ -144,7 +142,10 @@ class UserService:
         self.user_dal.set_user_info(
             id=user.id, name=name, age=age, email=email, phone=phone, address=address
         )
-        return self.user_dal.get_user_by_id(user.id)
+        return {
+            "state": "success",
+            "result": self.user_dal.get_user_by_id(user.id),
+        }
 
     def delete_me(self, current_user):
         if current_user.username == "superadmin":

@@ -60,7 +60,7 @@ def login(
 
     return {
         "state": "success",
-        "username" : result["username"],
+        "username": result["username"],
         "name": result["name"],
         "age": result["age"],
         "email": result["email"],
@@ -68,6 +68,7 @@ def login(
         "address": result["address"],
         "access_token": access_token,
         "token_type": "bearer",
+        "id": result["id"],
     }
 
 

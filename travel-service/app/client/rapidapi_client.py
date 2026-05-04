@@ -6,6 +6,7 @@ from urllib.error import HTTPError, URLError
 from datetime import date
 from app.core.api_paths import ApiPaths
 from app.core.config import settings
+import socket
 
 
 class RapidApiError(Exception):
@@ -98,7 +99,7 @@ class RapidApiClient:
             params=querystring,
         )
 
-    def search_attraction_avalibilities(self, attraction_slug: str, date: date):
+    def search_attraction_availabilities(self, attraction_slug: str, date: date):
         querystring = {
             "slug": attraction_slug,
             "date": date.strftime("%Y-%m-%d"),
@@ -110,7 +111,6 @@ class RapidApiClient:
             path=ApiPaths.SEARCH_ATTRACTION_AVALIBILITIES,
             params=querystring,
         )
-        
 
     def search_flights(
         self, from_id: str, to_id: str, departure_date: date, adults: int, children: str
@@ -144,11 +144,15 @@ class RapidApiClient:
             with urlopen(request, timeout=30) as response:
                 payload = response.read().decode("utf-8")
                 return json.loads(payload)
+        except TimeoutError as error:
+            raise RapidApiError(504, "RapidAPI request timed out.") from error
         except HTTPError as error:
             detail = error.read().decode("utf-8", errors="replace")
             raise RapidApiError(error.code, detail or str(error)) from error
         except URLError as error:
             raise RapidApiError(500, "Failed to connect to RapidAPI.") from error
+        except socket.timeout as error:
+            raise RapidApiError(504, "RapidAPI request timed out.") from error
 
 
 @lru_cache(maxsize=1)

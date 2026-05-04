@@ -7,6 +7,7 @@ from app.core.database import connect_db
 from app.client.rapidapi_client import get_rapidapi_client
 from datetime import date
 from app.core.config import settings
+import json
 
 
 class SearchingService:
@@ -16,8 +17,9 @@ class SearchingService:
 
     def search_destination(self, query: str):
         result = self.client.search_destination(query=query)
+        result = ensure_dict(result)
         if result.get("status") is True:
-            return {"state": "success", "result": result}
+            return {"state": "success", "result": result.get("data")}
         return {
             "state": "fail",
             "result": result,
@@ -31,6 +33,7 @@ class SearchingService:
             price_min=data.price_min,
             price_max=data.price_max,
         )
+        result = ensure_dict(result)
         if result.get("status") is False:
             return {"state": "success", "result": result}
 
@@ -79,6 +82,7 @@ class SearchingService:
 
     def search_attraction_location(self, location: str):
         result = self.client.search_attraction_location(location=location)
+        result = ensure_dict(result)
         if result.get("status") is False:
             return {"state": "fail", "result": result}
         data = result.get("data")
@@ -89,6 +93,7 @@ class SearchingService:
         result = self.client.search_attraction_list_by_dest_id(
             location_id=location_id, date=date
         )
+        result = ensure_dict(result)
         if result.get("status") is False:
             return {"state": "fail", "result": result}
 
@@ -122,6 +127,7 @@ class SearchingService:
 
     def search_attraction_details(self, attraction_slug: str):
         result = self.client.search_attraction_details(attraction_slug)
+        result = ensure_dict(result)
         if result.get("status") is False:
             return {"state": "fail", "result": result}
         product = result.get("data") or {}
@@ -184,10 +190,11 @@ class SearchingService:
 
         return {"state": "success", "result": cleaned_result}
 
-    def search_attraction_avalibilities(self, attraction_slug: str, date: date):
-        result = self.client.search_attraction_avalibilities(
+    def search_attraction_availabilities(self, attraction_slug: str, date: date):
+        result = self.client.search_attraction_availabilities(
             attraction_slug=attraction_slug, date=date
         )
+        result = ensure_dict(result)
         slots = result.get("data", [])
         cleaned_slots = []
         for slot in slots:
@@ -201,16 +208,18 @@ class SearchingService:
                             "offer_item_id": item.get("offerItemId"),
                             "type": item.get("type"),
                             "label": item.get("label"),
-                            "language": item.get("languageOption", {}).get("language"),
-                            "price": item.get("price", {}).get("chargeAmount"),
-                            "currency": item.get("price", {}).get("currency"),
-                            "free_cancellation": item.get("cancellationPolicy", {}).get(
-                                "hasFreeCancellation"
+                            "language": (item.get("languageOption") or {}).get(
+                                "language"
                             ),
-                            "cancellation_period": item.get(
-                                "cancellationPolicy", {}
+                            "price": (item.get("price") or {}).get("chargeAmount"),
+                            "currency": (item.get("price") or {}).get("currency"),
+                            "free_cancellation": (
+                                item.get("cancellationPolicy") or {}
+                            ).get("hasFreeCancellation"),
+                            "cancellation_period": (
+                                item.get("cancellationPolicy") or {}
                             ).get("period"),
-                            "max_group_size": item.get("constraint", {}).get(
+                            "max_group_size": (item.get("constraint") or {}).get(
                                 "maxGroupSize"
                             ),
                             "traveler_count_required": item.get(
@@ -244,6 +253,7 @@ class SearchingService:
 
     def search_flight_location(self, location: str):
         result = self.client.search_flight_location(location=location)
+        result = ensure_dict(result)
         if result.get("status") is False:
             return {"state": "fail", "result": result}
 
@@ -258,6 +268,8 @@ class SearchingService:
             adults=request_form.adults,
             children=request_form.children,
         )
+        result = ensure_dict(result)
+
         if result.get("status") is False:
             return {"state": "fail", "result": result}
 
@@ -330,3 +342,9 @@ def get_cheapest_hotels(hotels: list[dict], limit: int) -> list[dict]:
 
     sorted_hotels = sorted(hotels, key=hotel_price)
     return sorted_hotels[:limit]
+
+
+def ensure_dict(result):
+    if isinstance(result, str):
+        return json.loads(result)
+    return result

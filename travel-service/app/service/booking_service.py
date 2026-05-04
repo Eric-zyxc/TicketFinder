@@ -152,22 +152,52 @@ class BookingService:
         success = self.booking_dal.delete_attraction_booking(booking)
         if not success:
             return {"state": "fail", "result": "delete failed"}
-        return {"state": "success", "result": f"attraction booking {booking_id} deleted"}
+        return {
+            "state": "success",
+            "result": f"attraction booking {booking_id} deleted",
+        }
 
     def get_attraction_bookings_by_user_id(self, user_id: int):
         bookings = self.booking_dal.get_attraction_bookings_by_user_id(user_id=user_id)
+
         if bookings is None:
             return {"state": "fail", "result": "failed to fetch attraction bookings"}
-        return bookings
+
+        result = []
+
+        for booking in bookings:
+            attraction = self.booking_dal.get_attraction_by_id(booking.attraction_id)
+
+            result.append({"booking": booking, "attraction": attraction})
+
+        return {"state": "success", "result": result}
 
     def get_hotel_bookings_by_user_id(self, user_id: int):
         bookings = self.booking_dal.get_hotel_bookings_by_user_id(user_id=user_id)
+
         if bookings is None:
             return {"state": "fail", "result": "failed to fetch hotel bookings"}
-        return bookings
+
+        result = []
+
+        for booking in bookings:
+            hotel = self.booking_dal.get_hotel_by_id(booking.hotel_id)
+
+            result.append({"booking": booking, "hotel": hotel})
+
+        return {"state": "success", "result": result}
 
     def get_flight_bookings_by_user_id(self, user_id: int):
         bookings = self.booking_dal.get_flight_bookings_by_user_id(user_id=user_id)
+
         if bookings is None:
             return {"state": "fail", "result": "failed to fetch flight bookings"}
-        return bookings
+
+        result = []
+
+        for booking in bookings:
+            flight = self.booking_dal.get_flight_by_id(booking.flight_id)
+
+            result.append({"booking": booking, "flight": flight})
+
+        return {"state": "success", "result": result}

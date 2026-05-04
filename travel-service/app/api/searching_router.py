@@ -28,7 +28,7 @@ def search_hotel_destination(
         ) from error
 
 
-@searching_router.post("/hotel/search")
+@searching_router.post("/hotel")
 def search_hotel(
     data: request.HotelSearchRequest,
     searching_service: SearchingService = Depends(get_searching_service),
@@ -91,7 +91,7 @@ def search_attraction_list(
         ) from error
 
 
-@searching_router.post("/attraction/detials")
+@searching_router.post("/attraction/details")
 def search_attraction_details(
     attraction_slug: str,
     searching_service: SearchingService = Depends(get_searching_service),
@@ -114,22 +114,22 @@ def search_attraction_details(
         ) from error
 
 
-@searching_router.post("/attraction/avalibilities")
-def search_attraction_avalibilities(
+@searching_router.post("/attraction/availabilities")
+def search_attraction_availabilities(
     attraction_slug: str,
     date: date,
     searching_service: SearchingService = Depends(get_searching_service),
 ):
     """
     Description:\n
-        get the avalibilities of a certain attraction product.\n
+        get the availabilities of a certain attraction product.\n
     Parameter: \n
         attraction_slug: str    (Example: prniftrnyibs-full-day-guided-san-jose-del-cabo-and-cabo-san-lucas-tour)\n
     Response:\n
-        JSON, the detials of the avalibilities of the product.\n
+        JSON, the detials of the availabilities of the product.\n
     """
     try:
-        return searching_service.search_attraction_avalibilities(
+        return searching_service.search_attraction_availabilities(
             attraction_slug=attraction_slug, date=date
         )
     except RapidApiError as error:

@@ -21,6 +21,10 @@ class BookingDAO:
         flight = self.db.query(Flight).filter(Flight.id == id).first()
         return flight
 
+    def get_attraction_by_id(self, id: int):
+        attraction = self.db.query(Attraction).filter(Attraction.id == id).first()
+        return attraction
+
     def get_hotel_booking_by_id(self, id: int):
         booking = self.db.query(HotelBooking).filter(HotelBooking.id == id).first()
         return booking

@@ -1,36 +1,42 @@
 <template>
   <div id="background">
-    <div id="page">
-      <p class="title">User Information</p>
+    <div class="signup_overlay">
+      <div class="signup_window">
+        <h2 class="title">Create Account</h2>
 
-      <p class="text">Username <span class="start">*</span> :</p>
-      <input class="input" v-model="username" />
+        <div class="form">
+          <label>Username <span class="star">*</span></label>
+          <input v-model="username" />
 
-      <p class="text">Password <span class="start">*</span>:</p>
-      <input class="input" v-model="password" type="password" />
+          <label>Password <span class="star">*</span></label>
+          <input v-model="password" type="password" />
 
-      <p class="text">Comfirm password <span class="start">*</span>:</p>
-      <input class="input" v-model="confirmPassword" type="password" />
+          <label>Confirm Password <span class="star">*</span></label>
+          <input v-model="confirmPassword" type="password" />
 
-      <p class="text">Name:</p>
-      <input class="input" v-model="name" />
+          <label>Name</label>
+          <input v-model="name" />
 
-      <p class="text">Age:</p>
-      <input class="input" v-model="age" />
+          <label>Age</label>
+          <input v-model="age" type="number" />
 
-      <p class="text">Email:</p>
-      <input class="input" v-model="email" />
+          <label>Email</label>
+          <input v-model="email" />
 
-      <p class="text">Phone:</p>
-      <input class="input" v-model="phone" />
+          <label>Phone</label>
+          <input v-model="phone" />
 
-      <p class="text">Address:</p>
-      <input class="input" v-model="address" />
+          <label>Address</label>
+          <input v-model="address" />
+        </div>
 
-      <button class="signup_button" @click="signup">Sign Up</button>
-      <button class="back_button" @click="return_button">Back</button>
+        <div class="button_line">
+          <button class="btn primary" @click="signup">Sign Up</button>
+          <button class="btn secondary" @click="return_button">Back</button>
+        </div>
 
-      <p class="return_message">{{ message }}</p>
+        <p class="message">{{ message }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -41,6 +47,7 @@ import { useRouter } from "vue-router";
 import { identity_request } from "@/router/api_client";
 
 const router = useRouter();
+
 const username = ref("");
 const password = ref("");
 const confirmPassword = ref("");
@@ -52,12 +59,13 @@ const address = ref("");
 const message = ref("");
 
 async function signup() {
-  if (username.value == "") {
+  if (username.value === "") {
     message.value = "Username cannot be empty";
     return;
   }
-  if (password.value != confirmPassword.value) {
-    message.value = "Confirm password doesn't match";
+
+  if (password.value !== confirmPassword.value) {
+    message.value = "Passwords do not match";
     return;
   }
 
@@ -80,12 +88,12 @@ async function signup() {
   });
 
   const data = await res.json();
-  if (data.state == "success") {
+
+  if (data.state === "success") {
     router.push("/login");
-  } else if (data.state == "fail") {
+  } else {
     message.value = data.message;
   }
-  return;
 }
 
 function return_button() {
@@ -93,79 +101,114 @@ function return_button() {
 }
 </script>
 
-<style lang="css">
-html, body {
-  margin: 0;
-  padding: 0;
-}
-
-.start {
-  color: red;
-}
-
+<style scoped>
 #background {
-  background-color: rgb(212, 239, 252);
-  padding-top: 50px;
-  padding-bottom: 700px;
+  height: 100vh;
+  width: 100%;
   background-image: url("/src/asset/picture/bk1.png");
-  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
-#page {
-  margin-inline: 30%;
-  width: 40%;
-  height: 850px;
-  background-color: rgb(191, 227, 249);
-  border-radius: 20px;
-  box-shadow: 5px 5px 10px rgba(64, 60, 60, 0.3);
-  .text {
-    margin-top: 10px;
-    font-family:
-      system-ui,
-      -apple-system,
-      BlinkMacSystemFont,
-      "Segoe UI",
-      Roboto,
-      Oxygen,
-      Ubuntu,
-      Cantarell,
-      "Open Sans",
-      "Helvetica Neue",
-      sans-serif;
-    font-size: large;
-    margin-left: 20%;
-  }
-  .title {
-    text-align: center;
-    padding: 20px;
-    font-size: 30px;
-    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  }
+.signup_overlay {
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .input {
-    display: block;
-    margin-left: 20%;
-    width: 60%;
-  }
-  .signup_button {
-    margin-left: 20%;
-    margin-block: 20px;
-    margin-right: 5%;
-    width: 80px;
-  }
-  .back_button {
-    margin-block: 20px;
-    margin-right: 20%;
-    width: 80px;
-  }
-  .signup_button:hover .back_button:hover {
-    background-color: rgba(84, 83, 83, 0.1);
-  }
-  .return_message {
-    font-family: monospace;
-    margin-inline: 20%;
-    margin-block: 20px;
-    color: #605f5f;
-  }
+.signup_window {
+  width: 420px;
+  padding: 30px;
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(150, 180, 200, 0.4);
+  box-shadow: 0 18px 40px rgba(40, 80, 110, 0.2);
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.title {
+  text-align: center;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: #2e465d;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #2e465d;
+}
+
+.form input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #c7d3db;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.form input:focus {
+  border-color: #409eff;
+  box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.2);
+}
+
+.button_line {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  flex: 1;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.primary {
+  background: linear-gradient(135deg, #409eff, #2f8ee5);
+  color: white;
+}
+
+.primary:hover {
+  filter: brightness(0.95);
+}
+
+.secondary {
+  background: #eef6fb;
+  color: #2e465d;
+}
+
+.secondary:hover {
+  background: #dbeef9;
+}
+
+.message {
+  text-align: center;
+  font-size: 13px;
+  color: #b91c1c;
+}
+
+.star {
+  color: red;
 }
 </style>

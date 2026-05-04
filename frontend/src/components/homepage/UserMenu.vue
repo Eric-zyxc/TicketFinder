@@ -8,7 +8,9 @@
     </div>
 
     <div class="selections">
-      <button class="user_button" @click="emit('switch-view', 'profile')">👤 Profile</button>
+      <button class="user_button" @click="emit('switch-view', 'profile')">
+        👤 Profile
+      </button>
       <button class="user_button">✈️ Flight History</button>
       <button class="user_button">🏨 Hotel History</button>
       <button class="user_button">🎁 Rewards & Gifts</button>
@@ -22,7 +24,7 @@
 import { useRouter } from "vue-router";
 import { identity_request } from "@/router/api_client";
 
-const emit = defineEmits(['switch-view'])
+const emit = defineEmits(["switch-view"]);
 
 const router = useRouter();
 
@@ -58,82 +60,94 @@ async function logout() {
     localStorage.removeItem("email");
     localStorage.removeItem("phone");
     localStorage.removeItem("address");
+    localStorage.removeItem("user_id");
     router.push("/");
   }
   return;
 }
-
 </script>
 
 <style lang="css">
 .block {
   display: flex;
   flex-direction: column;
-  .profile {
-    background-color: rgba(170, 233, 251, 0.596);
-    margin-block: 5%;
-    margin-inline: 10%;
-    border: 2px solid rgb(177, 181, 183);
-    border-radius: 30px;
+  gap: 18px;
+  padding: 14px;
+  box-sizing: border-box;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
 
-    #init_text {
-      text-align: center;
-      font-size: 40px;
-      padding-top: 13px;
-    }
-    .user_initial {
-      background-color: rgb(181, 216, 243);
-      height: 80px;
-      width: 80px;
-      justify-self: center;
-      margin-block: 10px;
-      border: 2px solid rgb(251, 250, 250);
-      border-radius: 80px;
-    }
-    .user_name {
-      text-align: center;
-      font-family:
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Oxygen,
-        Ubuntu,
-        Cantarell,
-        "Open Sans",
-        "Helvetica Neue",
-        sans-serif;
-      font-size: 15px;
-      font-weight: bold;
-    }
-    padding-bottom: 10px;
-  }
-  .selections {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-inline: 5px;
-    .user_button {
-      font-family:
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Oxygen,
-        Ubuntu,
-        Cantarell,
-        "Open Sans",
-        "Helvetica Neue",
-        sans-serif;
-      font-size: medium;
-      border-radius: 20px;
-    }
-    .user_button:hover {
-      scale: 103%;
-      background-color: azure;
-    }
-  }
+.profile {
+  padding: 18px 12px;
+  border-radius: 22px;
+  background: linear-gradient(
+    135deg,
+    rgba(183, 229, 248, 0.95),
+    rgba(208, 181, 243, 0.9)
+  );
+  border: 1px solid rgba(130, 170, 190, 0.45);
+  box-shadow: 0 10px 24px rgba(40, 80, 110, 0.12);
+}
+
+.user_initial {
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 12px auto;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #adf499, #0a7ed1);
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 22px rgba(64, 158, 255, 0.28);
+}
+
+#init_text {
+  margin: 0;
+  color: white;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.user_name {
+  margin: 0;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 800;
+  color: #1f2933;
+  word-break: break-word;
+}
+
+.selections {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.user_button {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid rgba(120, 160, 180, 0.45);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #2e465d;
+  font-size: 14px;
+  font-weight: 750;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(40, 80, 110, 0.08);
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.user_button:hover {
+  transform: translateY(-2px);
+  background-color: #eef9ff;
 }
 </style>
