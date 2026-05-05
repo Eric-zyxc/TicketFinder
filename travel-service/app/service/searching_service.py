@@ -6,8 +6,9 @@ from fastapi import Depends
 from app.core.database import connect_db
 from app.client.rapidapi_client import get_rapidapi_client
 from datetime import date
-from app.core.config import settings
 import json
+
+MAX_CHEAPEST_HOTELS = 50
 
 
 class SearchingService:
@@ -72,7 +73,7 @@ class SearchingService:
             )
 
         cheapest_hotels = get_cheapest_hotels(
-            clean_hotels, limit=settings.MAX_CHEAPEST_HOTELS
+            clean_hotels, limit=MAX_CHEAPEST_HOTELS
         )  # get cheapest 50 results
 
         return {
