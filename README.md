@@ -8,10 +8,11 @@ A full-stack travel booking system with hotel search, booking services, and a mo
 ```
 TICKETFINDER/
 │
+├── _initialization/      # Database set up
 ├── frontend/             # Vue + Vite frontend
 ├── travel-service/       # Main travel backend (search + booking)
 ├── identity-service/     # Auth / user service
-├── pip_reqirements/      # pip requirements list
+├── reqirements           # pip requirements list
 └── README.md
 ```
 
