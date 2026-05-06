@@ -27,11 +27,8 @@ TICKETFINDER/
 - 🔐 Authentication (JWT-based)
 - 🧱 Clean architecture:
   - router → service → client / dal
-
-### 🔄 In Progress
 - Frontend integration
 - Flight search (API / mock)
-- Caching layer
 - UI improvements
 
 ---
