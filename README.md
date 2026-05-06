@@ -57,13 +57,13 @@ TICKETFINDER/
 ## ⚙️ Setup Instructions
 
 - After cloning the project to the local, both services need “.env” configuration files. 
--- Identity Service .env needs: 	
+1. Identity Service .env needs: 	
 ``` text
 DATABASE_URL= {Your database url}  # database url
 ACCESS_TOKEN_EXPIRE_MINUTES=60     # authentication expire time
 AUTH_ALGORITHM=HS256               # password hashing algorithm
 ```
--- Travel Service .env needs:
+2. Travel Service .env needs:
 ``` text
 DATABASE_URL=  {Your database url}  # database url
 RAPIDAPI_KEY=  {RapidAPI Key}       # your RapidAPI key
