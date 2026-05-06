@@ -1,8 +1,7 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Integer, DateTime, DECIMAL
+from sqlalchemy import String, Integer, DateTime
 from app.core.database import Base
 from datetime import datetime
-from decimal import Decimal
 
 
 class Flight(Base):

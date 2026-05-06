@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Integer, Float, DECIMAL
+from sqlalchemy import String, Integer, Float
 from app.core.database import Base
-from decimal import Decimal
 
 
 class Hotel(Base):

@@ -8,21 +8,15 @@ load_dotenv()
 
 @dataclass(frozen=True)
 class Settings:
-    ACCESS_TOKEN_EXPIRE_MINUTES: int | None
-    SECRET_KEY: str | None
     DATABASE_URL: str | None
     RAPIDAPI_KEY: str | None
-    MAX_CHEAPEST_HOTELS: int | None
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
 
     return Settings(
         DATABASE_URL = os.getenv("DATABASE_URL"),
-        SECRET_KEY = os.getenv("SECRET_KEY"),
-        ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")),
         RAPIDAPI_KEY= os.getenv("RAPIDAPI_KEY"),
-        MAX_CHEAPEST_HOTELS = int(os.getenv("MAX_CHEAPEST_HOTELS")),
     )
     
 settings = get_settings()

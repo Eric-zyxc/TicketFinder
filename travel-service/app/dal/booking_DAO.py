@@ -1,5 +1,4 @@
 from sqlalchemy.orm import Session
-from app.models.user import User
 from app.models.hotel import Hotel
 from app.models.flight import Flight
 from app.models.hotel_booking import HotelBooking

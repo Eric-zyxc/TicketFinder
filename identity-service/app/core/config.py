@@ -11,6 +11,7 @@ class Settings:
     ACCESS_TOKEN_EXPIRE_MINUTES: int | None
     SECRET_KEY: str | None
     DATABASE_URL: str | None
+    AUTH_ALGORITHM: str | None
 
 
 @lru_cache(maxsize=1)
@@ -20,6 +21,7 @@ def get_settings() -> Settings:
         DATABASE_URL=os.getenv("DATABASE_URL"),
         SECRET_KEY=os.getenv("SECRET_KEY"),
         ACCESS_TOKEN_EXPIRE_MINUTES=int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")),
+        AUTH_ALGORITHM=int(os.getenv("AUTH_ALGORITHM")),
     )
 
 

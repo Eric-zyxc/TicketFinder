@@ -6,10 +6,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from app.core.database import connect_db
 from app.dal.user_DAO import UserDAO
-
-SECRET_KEY = "admin"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 3000
+from app.core.config import settings
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
@@ -23,8 +20,11 @@ def get_current_user(
         detail="Invalid token",
         headers={"WWW-Authenticate": "Bearer"},
     )
+
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[settings.AUTH_ALGORITHM]
+        )
         username = payload.get("sub")
         if username is None:
             raise credentials_exception
@@ -39,7 +39,7 @@ def get_current_user(
 
 def create_access_token(data: dict):
     to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt

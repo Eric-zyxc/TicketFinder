@@ -8,7 +8,7 @@ from app.client.rapidapi_client import get_rapidapi_client
 from datetime import date
 import json
 
-MAX_CHEAPEST_HOTELS = 50
+MAX_CHEAPEST_HOTELS = 100
 
 
 class SearchingService:
