@@ -18,10 +18,10 @@ class Settings:
 def get_settings() -> Settings:
 
     return Settings(
-        DATABASE_URL=os.getenv("DATABASE_URL"),
-        SECRET_KEY=os.getenv("SECRET_KEY"),
+        DATABASE_URL=str(os.getenv("DATABASE_URL")),
+        SECRET_KEY=str(os.getenv("SECRET_KEY")),
         ACCESS_TOKEN_EXPIRE_MINUTES=int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")),
-        AUTH_ALGORITHM=int(os.getenv("AUTH_ALGORITHM")),
+        AUTH_ALGORITHM=str(os.getenv("AUTH_ALGORITHM")),
     )
 
 

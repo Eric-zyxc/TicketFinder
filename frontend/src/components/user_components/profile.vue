@@ -62,6 +62,9 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { identity_request } from "@/router/api_client";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const emit = defineEmits<{
   (e: "switch-view", view: "change_pwd"): void;
@@ -125,6 +128,13 @@ async function save_profile_change(): Promise<void> {
     },
     body: JSON.stringify(body),
   });
+
+  if (res.status === 401) {
+    alert("Session expired");
+    localStorage.clear();
+    router.push("/");
+    return;
+  }
 
   if (!res.ok) {
     message.value = `Request failed: ${res.status}`;

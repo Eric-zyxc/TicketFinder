@@ -53,6 +53,13 @@ async function logout() {
   });
 
   const data = await res.json();
+  if (res.status === 401) {
+    alert("Session expired");
+    localStorage.clear();
+    router.push("/");
+    return;
+  }
+
   if (data.state === "success") {
     localStorage.removeItem("token");
     localStorage.removeItem("name");
@@ -61,6 +68,7 @@ async function logout() {
     localStorage.removeItem("phone");
     localStorage.removeItem("address");
     localStorage.removeItem("user_id");
+    localStorage.clear();
     router.push("/");
   }
   return;
